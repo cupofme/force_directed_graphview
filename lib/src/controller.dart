@@ -19,41 +19,40 @@ class GraphController with ChangeNotifier {
   GraphLayout get layout => _layout ?? (throw StateError('Graph is not laid out yet'));
   bool get hasLayout => _layout != null;
 
-  void addNode(Node node) {
-    if (_hasNode(node)) {
-      throw ArgumentError.value('Node is already in the graph');
-    }
+  void mutate(void Function(GraphBuilder builder) builder) {
+    builder(GraphBuilder(this));
 
-    _nodes.add(node);
     notifyListeners();
     relayout();
   }
 
-  void removeNode(Node node) {
+  void _addNode(Node node) {
+    if (_hasNode(node)) {
+      throw StateError('Node is already in the graph');
+    }
+
+    _nodes.add(node);
+  }
+
+  void _removeNode(Node node) {
     if (!_hasNode(node)) {
       throw StateError('Node $node is not in the graph');
     }
 
     _nodes.remove(node);
     _edges.removeWhere((edge) => edge.source == node || edge.target == node);
-    notifyListeners();
-    relayout();
   }
 
-  void addEdge(Edge edge) {
+  void _addEdge(Edge edge) {
     if (!_hasNode(edge.source) || !_hasNode(edge.target)) {
       throw StateError('Source or target node is not in the graph');
     }
 
     _edges.add(edge);
-    notifyListeners();
-    relayout();
   }
 
-  void removeEdge(Edge edge) {
+  void _removeEdge(Edge edge) {
     _edges.remove(edge);
-    notifyListeners();
-    relayout();
   }
 
   // todo: make internal
@@ -126,4 +125,27 @@ class GraphController with ChangeNotifier {
   }
 
   bool _hasNode(Node node) => _nodes.any((n) => n == node);
+}
+
+// todo: Rename to something more meaningful
+class GraphBuilder {
+  final GraphController controller;
+
+  GraphBuilder(this.controller);
+
+  void addNode(Node node) {
+    controller._addNode(node);
+  }
+
+  void addEdge(Edge edge) {
+    controller._addEdge(edge);
+  }
+
+  void removeNode(Node node) {
+    controller._removeNode(node);
+  }
+
+  void removeEdge(Edge edge) {
+    controller._removeEdge(edge);
+  }
 }

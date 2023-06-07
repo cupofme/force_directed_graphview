@@ -27,24 +27,26 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
   void initState() {
     super.initState();
 
-    for (var i = 0; i < _nodeCount; i++) {
-      final node = Node(
-        data: User.generate(),
-        size: _nodeSize,
-      );
+    _controller.mutate((builder) {
+      for (var i = 0; i < _nodeCount; i++) {
+        final node = Node(
+          data: User.generate(),
+          size: _nodeSize,
+        );
 
-      _controller.addNode(node);
-    }
-
-    final nodes = _controller.nodes.toList();
-
-    for (final node in nodes.take(_nodeCount ~/ 10)) {
-      final other = nodes.elementAt(_random.nextInt(_nodeCount));
-
-      if (other != node) {
-        _controller.addEdge(Edge(node, other));
+        builder.addNode(node);
       }
-    }
+
+      final nodes = _controller.nodes.toList();
+
+      for (final node in nodes.take(_nodeCount ~/ 10)) {
+        final other = nodes.elementAt(_random.nextInt(_nodeCount));
+
+        if (other != node) {
+          builder.addEdge(Edge(node, other));
+        }
+      }
+    });
   }
 
   @override

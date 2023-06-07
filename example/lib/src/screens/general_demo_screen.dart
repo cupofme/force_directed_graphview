@@ -26,26 +26,28 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
   void initState() {
     super.initState();
 
-    const nodeCount = 100;
-    for (var i = 0; i < nodeCount; i++) {
-      final size = i + 20;
+    _controller.mutate((builder) {
+      const nodeCount = 100;
+      for (var i = 0; i < nodeCount; i++) {
+        final size = i + 20;
 
-      final user = User.generate();
+        final user = User.generate();
 
-      final node = Node(
-        data: user,
-        size: size.toDouble(),
-        label: '${user.firstName} ${user.lastName}',
-      );
+        final node = Node(
+          data: user,
+          size: size.toDouble(),
+          label: '${user.firstName} ${user.lastName}',
+        );
 
-      _controller.addNode(node);
+        builder.addNode(node);
 
-      for (final other in _nodes) {
-        if (other != node && _random.nextInt(nodeCount + 40 - size) == 0) {
-          _controller.addEdge(Edge(node, other));
+        for (final other in _nodes) {
+          if (other != node && _random.nextInt(nodeCount + 40 - size) == 0) {
+            builder.addEdge(Edge(node, other));
+          }
         }
       }
-    }
+    });
   }
 
   @override
@@ -70,10 +72,13 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                     size: node.size,
                     label: node.label,
                   );
-                  _controller.addNode(newNode);
-                  _controller.addEdge(Edge(node, newNode));
+
+                  _controller.mutate((builder) {
+                    builder.addNode(newNode);
+                    builder.addEdge(Edge(node, newNode));
+                  });
                 },
-                onLongPressed: () => _controller.removeNode(node),
+                onLongPressed: () => _controller.mutate((builder) => builder.removeNode(node)),
               ),
               edgePainter: (canvas, edge, sourcePosition, targetPosition) {
                 canvas.drawLine(
