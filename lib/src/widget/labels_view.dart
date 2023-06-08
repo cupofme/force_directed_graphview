@@ -11,6 +11,11 @@ class LabelsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = InheritedConfiguration.controllerOf(context);
     final configuration = InheritedConfiguration.configurationOf(context);
+    final labelBuilder = configuration.labelBuilder;
+
+    if (labelBuilder == null) {
+      return const SizedBox();
+    }
 
     return AnimatedBuilder(
       animation: controller,
