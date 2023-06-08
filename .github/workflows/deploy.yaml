@@ -23,7 +23,7 @@ jobs:
           flutter-version: 3.10.3
           channel: stable
           cache: true
-      - run: flutter build web --release --web-renderer canvaskit
+      - run: flutter build web --release --web-renderer canvaskit --base-href=/force_directed_graphview/
         working-directory: example
       - uses: actions/upload-pages-artifact@v1
         with:
