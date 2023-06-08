@@ -23,7 +23,9 @@ class NodesView extends StatelessWidget {
             for (var node in visibleNodes)
               LayoutId(
                 id: node,
-                child: RepaintBoundary(child: configuration.nodeBuilder(context, node)),
+                child: RepaintBoundary(
+                  child: configuration.nodeBuilder(context, node),
+                ),
               )
           ],
         );
@@ -47,7 +49,10 @@ class _NodesLayoutDelegate extends MultiChildLayoutDelegate {
     for (final node in visibleNodes) {
       final sizeSquare = Size.square(node.size);
       layoutChild(node, BoxConstraints.loose(sizeSquare));
-      positionChild(node, layout.getPosition(node) - sizeSquare.center(Offset.zero));
+      positionChild(
+        node,
+        layout.getPosition(node) - sizeSquare.center(Offset.zero),
+      );
     }
   }
 

@@ -2,7 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 
 typedef NodeBuilder = Widget Function(BuildContext context, Node node);
-typedef EdgePainter = void Function(Canvas canvas, Edge edge, Offset sourcePosition, Offset targetPosition);
+typedef EdgePainter = void Function(
+  Canvas canvas,
+  Edge edge,
+  Offset sourcePosition,
+  Offset targetPosition,
+);
 
 @immutable
 class GraphViewConfiguration {

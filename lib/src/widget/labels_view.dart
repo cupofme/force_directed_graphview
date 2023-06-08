@@ -49,7 +49,11 @@ class _LabelsPainter extends CustomPainter {
             textDirection: TextDirection.ltr)
           ..layout(minWidth: 0, maxWidth: 200);
 
-        textPainter.paint(canvas, layout.getPosition(node) + Offset(-textPainter.width / 2, node.size / 2));
+        textPainter.paint(
+          canvas,
+          layout.getPosition(node) +
+              Offset(-textPainter.width / 2, node.size / 2),
+        );
       }
     }
   }

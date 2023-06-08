@@ -62,8 +62,13 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
             child: GraphView(
               controller: _controller,
               size: const Size.square(3000),
-              labelTextStyle: const TextStyle(color: Colors.black, fontSize: 20),
-              layoutAlgorithm: const FruchtermanReingoldAlgorithm(iterations: 500),
+              labelTextStyle: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+              layoutAlgorithm: const FruchtermanReingoldAlgorithm(
+                iterations: 500,
+              ),
               nodeBuilder: (context, node) => UserNode(
                 node: node,
                 onPressed: () {
@@ -78,7 +83,9 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                     mutator.addEdge(Edge(node, newNode));
                   });
                 },
-                onLongPressed: () => _controller.mutate((mutator) => mutator.removeNode(node)),
+                onLongPressed: () => _controller.mutate(
+                  (mutator) => mutator.removeNode(node),
+                ),
               ),
               edgePainter: (canvas, edge, sourcePosition, targetPosition) {
                 canvas.drawLine(

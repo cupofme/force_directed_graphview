@@ -16,7 +16,8 @@ class GraphLayoutBuilder {
 
   Offset getNodePosition(Node node) => _nodePositions[node]!;
 
-  void setNodePosition(Node node, Offset position) => _nodePositions[node] = position;
+  void setNodePosition(Node node, Offset position) =>
+      _nodePositions[node] = position;
 
   void translateNode(Node node, Offset delta) {
     _nodePositions[node] = _nodePositions[node]! + delta;

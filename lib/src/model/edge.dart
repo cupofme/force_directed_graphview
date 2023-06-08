@@ -11,7 +11,10 @@ class Edge {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Edge && runtimeType == other.runtimeType && source == other.source && target == other.target;
+      other is Edge &&
+          runtimeType == other.runtimeType &&
+          source == other.source &&
+          target == other.target;
 
   @override
   int get hashCode => source.hashCode ^ target.hashCode;

@@ -14,14 +14,19 @@ class InheritedConfiguration extends InheritedWidget {
   final GraphController controller;
 
   static GraphController controllerOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<InheritedConfiguration>()!.controller;
+    return context
+        .dependOnInheritedWidgetOfExactType<InheritedConfiguration>()!
+        .controller;
   }
 
   static GraphViewConfiguration configurationOf<T>(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<InheritedConfiguration>()!.configuration;
+    return context
+        .dependOnInheritedWidgetOfExactType<InheritedConfiguration>()!
+        .configuration;
   }
 
   @override
   bool updateShouldNotify(InheritedConfiguration oldWidget) =>
-      oldWidget.controller != controller || oldWidget.configuration != configuration;
+      oldWidget.controller != controller ||
+      oldWidget.configuration != configuration;
 }

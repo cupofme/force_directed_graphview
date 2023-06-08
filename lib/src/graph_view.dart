@@ -40,7 +40,8 @@ class _GraphViewState extends State<GraphView> {
   @override
   void didUpdateWidget(covariant GraphView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.layoutAlgorithm != widget.layoutAlgorithm || oldWidget.size != widget.size) {
+    if (oldWidget.layoutAlgorithm != widget.layoutAlgorithm ||
+        oldWidget.size != widget.size) {
       widget.controller.applyLayout(widget.layoutAlgorithm, widget.size);
     }
   }

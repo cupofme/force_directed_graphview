@@ -59,12 +59,14 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     for (final node in nodes) {
       layoutBuilder.setNodePosition(
         node,
-        existingLayout?.getPositionOrNull(node) ?? _randomPosition(random, size),
+        existingLayout?.getPositionOrNull(node) ??
+            _randomPosition(random, size),
       );
     }
 
-    final iterations =
-        existingLayout == null ? this.iterations : (this.iterations * relayoutIterationsMultiplier).toInt();
+    final iterations = existingLayout == null
+        ? this.iterations
+        : (this.iterations * relayoutIterationsMultiplier).toInt();
 
     for (var step = 0; step < iterations; step++) {
       // todo - make this configurable
@@ -112,10 +114,12 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
       for (final u in nodes) {
         if (identical(v, u)) continue;
 
-        final delta = layoutBuilder.getNodePosition(v) - layoutBuilder.getNodePosition(u);
+        final delta =
+            layoutBuilder.getNodePosition(v) - layoutBuilder.getNodePosition(u);
         final distance = delta.distance;
 
-        displacements[v] = displacements[v]! + (delta / distance) * repulsion(distance);
+        displacements[v] =
+            displacements[v]! + (delta / distance) * repulsion(distance);
       }
     }
 
@@ -127,15 +131,21 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
       final delta = sourcePos - targetPos;
       final distance = delta.distance;
 
-      displacements[edge.source] = displacements[edge.source]! - (delta / distance) * attraction(distance);
-      displacements[edge.target] = displacements[edge.target]! + (delta / distance) * attraction(distance);
+      displacements[edge.source] = displacements[edge.source]! -
+          (delta / distance) * attraction(distance);
+      displacements[edge.target] = displacements[edge.target]! +
+          (delta / distance) * attraction(distance);
     }
 
     // Calculate displacement
     for (final v in nodes) {
       final displacement = displacements[v]!;
 
-      layoutBuilder.translateNode(v, (displacement / displacement.distance) * min(displacement.distance, temp));
+      layoutBuilder.translateNode(
+        v,
+        (displacement / displacement.distance) *
+            min(displacement.distance, temp),
+      );
     }
 
     // Prevent nodes from overlapping

@@ -16,7 +16,8 @@ class GraphController with ChangeNotifier {
 
   Set<Node> get nodes => Set.unmodifiable(_nodes);
   Set<Edge> get edges => Set.unmodifiable(_edges);
-  GraphLayout get layout => _layout ?? (throw StateError('Graph is not laid out yet'));
+  GraphLayout get layout =>
+      _layout ?? (throw StateError('Graph is not laid out yet'));
   bool get hasLayout => _layout != null;
 
   void mutate(void Function(GraphMutator mutator) callback) {
@@ -60,7 +61,8 @@ class GraphController with ChangeNotifier {
     // todo: configure margin
     final newEffectiveViewport = actualViewport.scale(1.2);
 
-    if (_effectiveViewport != null && _effectiveViewport!.containsRect(actualViewport)) {
+    if (_effectiveViewport != null &&
+        _effectiveViewport!.containsRect(actualViewport)) {
       return;
     } else {
       _effectiveViewport = newEffectiveViewport;

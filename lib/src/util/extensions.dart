@@ -38,6 +38,9 @@ extension RectExtensions on Rect {
   }
 
   bool containsRect(Rect rect) {
-    return contains(rect.topLeft) && contains(rect.topRight) && contains(rect.bottomLeft) && contains(rect.bottomRight);
+    return contains(rect.topLeft) &&
+        contains(rect.topRight) &&
+        contains(rect.bottomLeft) &&
+        contains(rect.bottomRight);
   }
 }
