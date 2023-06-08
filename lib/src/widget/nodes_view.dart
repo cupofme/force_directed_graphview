@@ -16,9 +16,13 @@ class NodesView extends StatelessWidget {
       animation: controller,
       builder: (context, _) {
         final visibleNodes = controller.getVisibleNodes();
+        final layout = controller.layout;
 
         return CustomMultiChildLayout(
-          delegate: _NodesLayoutDelegate(controller: controller),
+          delegate: _NodesLayoutDelegate(
+            nodes: visibleNodes,
+            layout: layout,
+          ),
           children: [
             for (var node in visibleNodes)
               LayoutId(
@@ -36,17 +40,16 @@ class NodesView extends StatelessWidget {
 
 class _NodesLayoutDelegate extends MultiChildLayoutDelegate {
   _NodesLayoutDelegate({
-    required this.controller,
-  }) : super(relayout: controller);
+    required this.nodes,
+    required this.layout,
+  });
 
-  final GraphController controller;
+  final Set<Node> nodes;
+  final GraphLayout layout;
 
   @override
   void performLayout(Size size) {
-    final layout = controller.layout;
-    final visibleNodes = controller.getVisibleNodes();
-
-    for (final node in visibleNodes) {
+    for (final node in nodes) {
       final sizeSquare = Size.square(node.size);
       layoutChild(node, BoxConstraints.loose(sizeSquare));
       positionChild(
@@ -57,5 +60,5 @@ class _NodesLayoutDelegate extends MultiChildLayoutDelegate {
   }
 
   @override
-  bool shouldRelayout(covariant MultiChildLayoutDelegate oldDelegate) => false;
+  bool shouldRelayout(covariant MultiChildLayoutDelegate oldDelegate) => true;
 }
