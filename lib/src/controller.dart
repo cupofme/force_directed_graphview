@@ -19,9 +19,8 @@ class GraphController with ChangeNotifier {
   GraphLayout get layout => _layout ?? (throw StateError('Graph is not laid out yet'));
   bool get hasLayout => _layout != null;
 
-  void mutate(void Function(GraphBuilder builder) builder) {
-    builder(GraphBuilder(this));
-
+  void mutate(void Function(GraphMutator mutator) callback) {
+    callback(GraphMutator(this));
     notifyListeners();
     relayout();
   }
@@ -127,11 +126,12 @@ class GraphController with ChangeNotifier {
   bool _hasNode(Node node) => _nodes.any((n) => n == node);
 }
 
-// todo: Rename to something more meaningful
-class GraphBuilder {
+/// Wrapper around [GraphController] that allows
+/// changing the graph in a batch to avoid unnecessary rebuilds.
+class GraphMutator {
   final GraphController controller;
 
-  GraphBuilder(this.controller);
+  GraphMutator(this.controller);
 
   void addNode(Node node) {
     controller._addNode(node);

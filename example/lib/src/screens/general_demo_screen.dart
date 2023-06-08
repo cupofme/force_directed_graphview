@@ -26,7 +26,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
   void initState() {
     super.initState();
 
-    _controller.mutate((builder) {
+    _controller.mutate((mutator) {
       const nodeCount = 100;
       for (var i = 0; i < nodeCount; i++) {
         final size = i + 20;
@@ -39,11 +39,11 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
           label: '${user.firstName} ${user.lastName}',
         );
 
-        builder.addNode(node);
+        mutator.addNode(node);
 
         for (final other in _nodes) {
           if (other != node && _random.nextInt(nodeCount + 40 - size) == 0) {
-            builder.addEdge(Edge(node, other));
+            mutator.addEdge(Edge(node, other));
           }
         }
       }
@@ -73,12 +73,12 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                     label: node.label,
                   );
 
-                  _controller.mutate((builder) {
-                    builder.addNode(newNode);
-                    builder.addEdge(Edge(node, newNode));
+                  _controller.mutate((mutator) {
+                    mutator.addNode(newNode);
+                    mutator.addEdge(Edge(node, newNode));
                   });
                 },
-                onLongPressed: () => _controller.mutate((builder) => builder.removeNode(node)),
+                onLongPressed: () => _controller.mutate((mutator) => mutator.removeNode(node)),
               ),
               edgePainter: (canvas, edge, sourcePosition, targetPosition) {
                 canvas.drawLine(

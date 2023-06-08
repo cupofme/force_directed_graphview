@@ -27,14 +27,14 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
   void initState() {
     super.initState();
 
-    _controller.mutate((builder) {
+    _controller.mutate((mutator) {
       for (var i = 0; i < _nodeCount; i++) {
         final node = Node(
           data: User.generate(),
           size: _nodeSize,
         );
 
-        builder.addNode(node);
+        mutator.addNode(node);
       }
 
       final nodes = _controller.nodes.toList();
@@ -43,7 +43,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
         final other = nodes.elementAt(_random.nextInt(_nodeCount));
 
         if (other != node) {
-          builder.addEdge(Edge(node, other));
+          mutator.addEdge(Edge(node, other));
         }
       }
     });
