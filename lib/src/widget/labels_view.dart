@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
-import 'package:force_directed_graphview/src/configuration.dart';
 import 'package:force_directed_graphview/src/widget/inherited_configuration.dart';
 
 class LabelsView extends StatelessWidget {
@@ -13,51 +12,58 @@ class LabelsView extends StatelessWidget {
     final controller = InheritedConfiguration.controllerOf(context);
     final configuration = InheritedConfiguration.configurationOf(context);
 
-    return RepaintBoundary(
-      child: CustomPaint(
-        painter: _LabelsPainter(
-          controller: controller,
-          configuration: configuration,
-        ),
-      ),
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) {
+        final visibleNodes = controller.getVisibleNodes();
+        final layout = controller.layout;
+        final labeledNodes = visibleNodes.where((node) => node.label != null);
+
+        return CustomMultiChildLayout(
+          delegate: _LabelsLayoutDelegate(
+            nodes: visibleNodes,
+            layout: layout,
+          ),
+          children: [
+            for (var node in labeledNodes)
+              LayoutId(
+                id: node,
+                child: RepaintBoundary(
+                  child: configuration.labelBuilder!(context, node),
+                ),
+              )
+          ],
+        );
+      },
     );
   }
 }
 
-class _LabelsPainter extends CustomPainter {
-  _LabelsPainter({
-    required this.controller,
-    required this.configuration,
-  }) : super(repaint: controller);
+class _LabelsLayoutDelegate extends MultiChildLayoutDelegate {
+  _LabelsLayoutDelegate({
+    required this.nodes,
+    required this.layout,
+  });
 
-  final GraphController controller;
-  final GraphViewConfiguration configuration;
+  final Set<Node> nodes;
+  final GraphLayout layout;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final nodes = controller.getVisibleNodes();
-    final layout = controller.layout;
-
+  void performLayout(Size size) {
     for (final node in nodes) {
-      final label = node.label;
-
-      if (label != null) {
-        // todo configure size
-        final textPainter = TextPainter(
-            text: TextSpan(text: label, style: configuration.labelStyle),
-            textAlign: TextAlign.justify,
-            textDirection: TextDirection.ltr)
-          ..layout(minWidth: 0, maxWidth: 200);
-
-        textPainter.paint(
-          canvas,
-          layout.getPosition(node) +
-              Offset(-textPainter.width / 2, node.size / 2),
-        );
-      }
+      final sizeSquare = Size.square(node.size);
+      layoutChild(node, BoxConstraints.loose(sizeSquare));
+      positionChild(
+        node,
+        layout.getPosition(node) +
+            Offset(
+              -node.size / 2,
+              node.size / 2,
+            ),
+      );
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRelayout(covariant MultiChildLayoutDelegate oldDelegate) => true;
 }

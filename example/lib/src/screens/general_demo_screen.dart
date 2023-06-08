@@ -96,6 +96,14 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                     ..color = Colors.black54,
                 );
               },
+              labelBuilder: (context, node) => Text(
+                node.label!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: node.size / 5,
+                ),
+              ),
               backgroundBuilder: (context) => const BackgroundGrid(),
             ),
           ),

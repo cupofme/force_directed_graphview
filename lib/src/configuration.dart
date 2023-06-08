@@ -9,11 +9,14 @@ typedef EdgePainter = void Function(
   Offset targetPosition,
 );
 
+typedef LabelBuilder = Widget Function(BuildContext context, Node node);
+
 @immutable
 class GraphViewConfiguration {
   const GraphViewConfiguration({
     required this.nodeBuilder,
     required this.edgePainter,
+    required this.labelBuilder,
     required this.layoutAlgorithm,
     required this.size,
     required this.labelStyle,
@@ -22,6 +25,7 @@ class GraphViewConfiguration {
 
   final NodeBuilder nodeBuilder;
   final EdgePainter edgePainter;
+  final LabelBuilder? labelBuilder;
   final WidgetBuilder? backgroundBuilder;
 
   final GraphLayoutAlgorithm layoutAlgorithm;
