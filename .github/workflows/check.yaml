@@ -1,0 +1,17 @@
+name: Check project on PR
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: dart format --set-exit-if-changed .
+      - run: flutter analyze .
