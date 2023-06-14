@@ -7,10 +7,17 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
   const FruchtermanReingoldAlgorithm({
     this.iterations = 100,
     this.relayoutIterationsMultiplier = 0.1,
+    this.showIterations = true,
   });
 
+  /// The number of iterations to run the algorithm
   final int iterations;
+
+  /// The coefficient for number of iterations to run when relayouting
   final double relayoutIterationsMultiplier;
+
+  /// If true, the algorithm will emit intermediate layouts as it runs
+  final bool showIterations;
 
   @override
   Stream<GraphLayout> layout({
@@ -85,9 +92,16 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
       temp *= 1 - (step / iterations);
 
-      yield layoutBuilder.build();
+      if (showIterations) {
+        yield layoutBuilder.build();
 
-      await Future<void>.delayed(const Duration(milliseconds: 8));
+        // To prevent the UI from freezing
+        await Future<void>.delayed(Duration.zero);
+      }
+    }
+
+    if (!showIterations) {
+      yield layoutBuilder.build();
     }
   }
 

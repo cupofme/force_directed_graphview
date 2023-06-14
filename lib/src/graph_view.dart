@@ -15,23 +15,24 @@ class GraphView extends StatefulWidget {
     required this.layoutAlgorithm,
     this.labelBuilder,
     this.backgroundBuilder,
+    this.loadingBuilder,
     this.minScale = 0.5,
     this.maxScale = 2,
-    required this.labelTextStyle,
     super.key,
   });
 
   final NodeBuilder nodeBuilder;
   final EdgePainter edgePainter;
   final LabelBuilder? labelBuilder;
+  final WidgetBuilder? backgroundBuilder;
+  final WidgetBuilder? loadingBuilder;
+
   final GraphController controller;
   final GraphLayoutAlgorithm layoutAlgorithm;
   final Size size;
-  final WidgetBuilder? backgroundBuilder;
+
   final double minScale;
   final double maxScale;
-
-  final TextStyle labelTextStyle;
 
   @override
   State<GraphView> createState() => _GraphViewState();
@@ -63,8 +64,8 @@ class _GraphViewState extends State<GraphView> {
         labelBuilder: widget.labelBuilder,
         layoutAlgorithm: widget.layoutAlgorithm,
         size: widget.size,
-        labelStyle: widget.labelTextStyle,
         backgroundBuilder: widget.backgroundBuilder,
+        loadingBuilder: widget.loadingBuilder,
       ),
       child: InteractiveViewer.builder(
         maxScale: widget.maxScale,

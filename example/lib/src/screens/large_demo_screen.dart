@@ -60,7 +60,6 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
         size: const Size.square(7000),
         minScale: 0.1,
         maxScale: 10,
-        labelTextStyle: const TextStyle(color: Colors.black, fontSize: 20),
         layoutAlgorithm: const GridLayoutAlgorithm(),
         nodeBuilder: (context, node) => UserNode(node: node),
         edgePainter: (canvas, edge, sourcePosition, targetPosition) {
