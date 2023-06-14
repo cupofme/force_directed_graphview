@@ -1,7 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:force_directed_graphview/force_directed_graphview.dart';
-import 'package:force_directed_graphview/src/util/extensions.dart';
-import 'package:vector_math/vector_math_64.dart';
+part of 'graph_view.dart';
 
 class GraphController with ChangeNotifier {
   final _nodes = <Node>{};
@@ -10,8 +7,6 @@ class GraphController with ChangeNotifier {
   GraphLayout? _layout;
   Size? _currentSize;
   GraphLayoutAlgorithm? _currentAlgorithm;
-
-  /// Viewport with margin applied
   Rect? _effectiveViewport;
 
   Set<Node> get nodes => Set.unmodifiable(_nodes);
@@ -23,63 +18,40 @@ class GraphController with ChangeNotifier {
   void mutate(void Function(GraphMutator mutator) callback) {
     callback(GraphMutator(this));
     notifyListeners();
-    relayout();
+    _relayout();
   }
 
-  void _addNode(Node node) {
-    if (_hasNode(node)) {
-      throw StateError('Node is already in the graph');
+  Set<Node> getVisibleNodes() {
+    final viewport = _effectiveViewport;
+    final layout = _layout;
+    if (viewport == null || layout == null) {
+      return {};
     }
 
-    _nodes.add(node);
+    return _nodes.where(
+      (node) {
+        if (!layout.hasPosition(node)) return false;
+        return viewport.containsNode(
+          node,
+          layout.getPosition(node),
+        );
+      },
+    ).toSet();
   }
 
-  void _removeNode(Node node) {
-    if (!_hasNode(node)) {
-      throw StateError('Node $node is not in the graph');
-    }
+  Future<void> _relayout() async {
+    final currentAlgorithm = _currentAlgorithm;
+    final currentSize = _currentSize;
 
-    _nodes.remove(node);
-    _edges.removeWhere((edge) => edge.source == node || edge.target == node);
-  }
-
-  void _addEdge(Edge edge) {
-    if (!_hasNode(edge.source) || !_hasNode(edge.target)) {
-      throw StateError('Source or target node is not in the graph');
-    }
-
-    _edges.add(edge);
-  }
-
-  void _removeEdge(Edge edge) {
-    _edges.remove(edge);
-  }
-
-  // todo: make internal
-  void updateViewport(Quad viewport) {
-    final actualViewport = viewport.toRect();
-    // todo: configure margin
-    final newEffectiveViewport = actualViewport.scale(1.2);
-
-    if (_effectiveViewport != null &&
-        _effectiveViewport!.containsRect(actualViewport)) {
-      return;
-    } else {
-      _effectiveViewport = newEffectiveViewport;
-      notifyListeners();
-    }
-  }
-
-  Future<void> relayout() async {
-    if (_currentAlgorithm == null || _currentSize == null) {
+    if (currentAlgorithm == null || currentSize == null) {
       return;
     }
 
-    final layoutStream = _currentAlgorithm!.relayout(
+    final layoutStream = currentAlgorithm.relayout(
       existingLayout: layout,
       nodes: nodes,
       edges: _edges,
-      size: _currentSize!,
+      size: currentSize,
     );
 
     await for (final layout in layoutStream) {
@@ -88,7 +60,7 @@ class GraphController with ChangeNotifier {
     }
   }
 
-  Future<void> applyLayout(GraphLayoutAlgorithm algorithm, Size size) async {
+  Future<void> _applyLayout(GraphLayoutAlgorithm algorithm, Size size) async {
     _currentAlgorithm = algorithm;
     _currentSize = size;
 
@@ -104,28 +76,52 @@ class GraphController with ChangeNotifier {
     }
   }
 
-  Set<Node> getVisibleNodes() {
-    final viewport = _effectiveViewport;
-    final layout = _layout;
-    if (viewport == null || layout == null) {
-      return {};
+  void _updateViewport(Quad viewport) {
+    final actualViewport = viewport.toRect();
+    // todo: configure margin
+    final newEffectiveViewport = actualViewport.scale(1.2);
+
+    if (_effectiveViewport != null &&
+        _effectiveViewport!.containsRect(actualViewport)) {
+      return;
+    } else {
+      _effectiveViewport = newEffectiveViewport;
+      notifyListeners();
     }
+  }
 
-    return _nodes.where(
-      (node) {
-        if (!layout.hasPosition(node)) {
-          return false;
-        }
+  void _addNode(Node node) {
+    if (_hasNode(node)) {
+      throw StateError('Node is already in the graph');
+    }
+    _nodes.add(node);
+  }
 
-        return viewport.containsNode(
-          node,
-          layout.getPosition(node),
-        );
-      },
-    ).toSet();
+  void _removeNode(Node node) {
+    if (!_hasNode(node)) {
+      throw StateError('Node $node is not in the graph');
+    }
+    _nodes.remove(node);
+    _edges.removeWhere((edge) => edge.source == node || edge.target == node);
+  }
+
+  void _addEdge(Edge edge) {
+    if (!_hasNode(edge.source) || !_hasNode(edge.target)) {
+      throw StateError('Source or target node is not in the graph');
+    }
+    _edges.add(edge);
+  }
+
+  void _removeEdge(Edge edge) {
+    if (!_hasEdge(edge)) {
+      throw StateError('Edge $edge is not in the graph');
+    }
+    _edges.remove(edge);
   }
 
   bool _hasNode(Node node) => _nodes.any((n) => n == node);
+
+  bool _hasEdge(Edge edge) => _edges.any((e) => e == edge);
 }
 
 /// Wrapper around [GraphController] that allows

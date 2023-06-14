@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
+import 'package:force_directed_graphview/src/util/extensions.dart';
 import 'package:force_directed_graphview/src/widget/graph_layout_view.dart';
 import 'package:force_directed_graphview/src/widget/inherited_configuration.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 import 'configuration.dart';
+
+part 'controller.dart';
 
 class GraphView extends StatefulWidget {
   const GraphView({
@@ -39,19 +43,21 @@ class GraphView extends StatefulWidget {
 }
 
 class _GraphViewState extends State<GraphView> {
+  final _transformationController = TransformationController();
+
   @override
   void didUpdateWidget(covariant GraphView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.layoutAlgorithm != widget.layoutAlgorithm ||
         oldWidget.size != widget.size) {
-      widget.controller.applyLayout(widget.layoutAlgorithm, widget.size);
+      widget.controller._applyLayout(widget.layoutAlgorithm, widget.size);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    widget.controller.applyLayout(widget.layoutAlgorithm, widget.size);
+    widget.controller._applyLayout(widget.layoutAlgorithm, widget.size);
   }
 
   @override
@@ -68,10 +74,13 @@ class _GraphViewState extends State<GraphView> {
         loadingBuilder: widget.loadingBuilder,
       ),
       child: InteractiveViewer.builder(
+        transformationController: _transformationController,
         maxScale: widget.maxScale,
         minScale: widget.minScale,
         builder: (context, viewport) {
-          widget.controller.updateViewport(viewport);
+          // Build method is not intended to produce any side effects, but viewport-producing
+          // code is internal to InteractiveViewer, so to avoid duplicating it, this little hack is used.
+          widget.controller._updateViewport(viewport);
           return const GraphLayoutView();
         },
       ),
