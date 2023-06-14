@@ -54,7 +54,6 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     required Size size,
     required GraphLayout? existingLayout,
   }) async* {
-    // todo - make this configurable
     var temp = sqrt(size.width / 2 * size.height / 2) / 20;
     final random = Random(0);
 
@@ -76,7 +75,6 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
         : (this.iterations * relayoutIterationsMultiplier).toInt();
 
     for (var step = 0; step < iterations; step++) {
-      // todo - make this configurable
       // Temperature below 1 won't have any noticeable effect
       if (temp < 1) {
         break;
