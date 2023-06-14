@@ -62,10 +62,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
             child: GraphView(
               controller: _controller,
               size: const Size.square(3000),
-              labelTextStyle: const TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ),
               layoutAlgorithm: const FruchtermanReingoldAlgorithm(
                 iterations: 500,
               ),

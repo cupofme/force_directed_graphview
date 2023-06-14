@@ -19,7 +19,6 @@ class GraphViewConfiguration {
     required this.labelBuilder,
     required this.layoutAlgorithm,
     required this.size,
-    required this.labelStyle,
     required this.backgroundBuilder,
     required this.loadingBuilder,
   });
@@ -32,5 +31,4 @@ class GraphViewConfiguration {
 
   final GraphLayoutAlgorithm layoutAlgorithm;
   final Size size;
-  final TextStyle labelStyle;
 }
