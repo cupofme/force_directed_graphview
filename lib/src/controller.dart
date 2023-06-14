@@ -41,13 +41,28 @@ class GraphController with ChangeNotifier {
     ).toSet();
   }
 
-  void zoomIn([double factor = 1.2]) {
-    zoomBy(factor);
+  void jumpToNode(Node node) {
+    final controller = _transformationController;
+    final layout = _layout;
+    final viewport = _effectiveViewport;
+    if (controller == null || layout == null || viewport == null) {
+      return;
+    }
+
+    final position = layout.getPosition(node);
+    final matrix = controller.value.clone();
+    final center = viewport.scale(1 / _effectiveViewportScale).center;
+
+    matrix
+      ..translate(center.dx, center.dy)
+      ..translate(-position.dx, -position.dy);
+
+    controller.value = matrix;
   }
 
-  void zoomOut([double factor = 1 / 1.2]) {
-    zoomBy(factor);
-  }
+  void zoomIn([double factor = 1.2]) => zoomBy(factor);
+
+  void zoomOut([double factor = 1 / 1.2]) => zoomBy(factor);
 
   void zoomBy(double factor) {
     if (factor <= 0) {

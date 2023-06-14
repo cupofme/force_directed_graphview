@@ -56,76 +56,111 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
       appBar: AppBar(
         title: const Text('General Graph Demo'),
       ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
+      floatingActionButton: _ZoomButtons(controller: _controller),
+      body: Stack(
         children: [
-          FloatingActionButton(
-            onPressed: () => _controller.zoomIn(),
-            child: const Icon(Icons.zoom_in),
-          ),
-          const SizedBox(height: 8),
-          FloatingActionButton(
-            onPressed: () => _controller.zoomOut(),
-            child: const Icon(Icons.zoom_out),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GraphView(
-              controller: _controller,
-              size: const Size.square(3000),
-              layoutAlgorithm: const FruchtermanReingoldAlgorithm(
-                iterations: 500,
-              ),
-              nodeBuilder: (context, node) => UserNode(
-                node: node,
-                onPressed: () {
-                  final newNode = Node(
-                    data: User.generate(),
-                    size: node.size,
-                    label: node.label,
-                  );
-
-                  _controller.mutate((mutator) {
-                    mutator.addNode(newNode);
-                    mutator.addEdge(Edge(node, newNode));
-                  });
-                },
-                onLongPressed: () => _controller.mutate(
-                  (mutator) => mutator.removeNode(node),
-                ),
-              ),
-              edgePainter: (canvas, edge, sourcePosition, targetPosition) {
-                canvas.drawLine(
-                  sourcePosition,
-                  targetPosition,
-                  Paint()
-                    ..strokeWidth = edge.source.size / edge.target.size
-                    ..color = Colors.black54,
+          GraphView(
+            controller: _controller,
+            size: const Size.square(3000),
+            layoutAlgorithm: const FruchtermanReingoldAlgorithm(
+              iterations: 500,
+            ),
+            nodeBuilder: (context, node) => UserNode(
+              node: node,
+              onPressed: () {
+                final newNode = Node(
+                  data: User.generate(),
+                  size: node.size,
+                  label: node.label,
                 );
+
+                _controller.mutate((mutator) {
+                  mutator.addNode(newNode);
+                  mutator.addEdge(Edge(node, newNode));
+                });
               },
-              labelBuilder: (context, node) => Text(
-                node.label!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: node.size / 5,
-                ),
+              onLongPressed: () => _controller.mutate(
+                (mutator) => mutator.removeNode(node),
               ),
-              backgroundBuilder: (context) => const BackgroundGrid(),
-              loadingBuilder: (context) => const Center(
-                child: CircularProgressIndicator(),
+              onDoubleTap: () => _controller.jumpToNode(node),
+            ),
+            edgePainter: (canvas, edge, sourcePosition, targetPosition) {
+              canvas.drawLine(
+                sourcePosition,
+                targetPosition,
+                Paint()
+                  ..strokeWidth = edge.source.size / edge.target.size
+                  ..color = Colors.black54,
+              );
+            },
+            labelBuilder: (context, node) => Text(
+              node.label!,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: node.size / 5,
               ),
             ),
+            backgroundBuilder: (context) => const BackgroundGrid(),
+            loadingBuilder: (context) => const Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
-          const Text(
-            'Tap to add a node, long press to delete the node',
-            style: TextStyle(fontSize: 30),
-          )
+          const _Instructions(),
         ],
       ),
+    );
+  }
+}
+
+class _Instructions extends StatelessWidget {
+  const _Instructions();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Positioned(
+      bottom: 16,
+      left: 16,
+      child: DefaultTextStyle(
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Tap to add a node'),
+            Text('Long press to delete a node'),
+            Text('Double tap to focus on node')
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ZoomButtons extends StatelessWidget {
+  const _ZoomButtons({
+    required this.controller,
+  });
+
+  final GraphController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FloatingActionButton(
+          onPressed: () => controller.zoomIn(),
+          child: const Icon(Icons.zoom_in),
+        ),
+        const SizedBox(height: 8),
+        FloatingActionButton(
+          onPressed: () => controller.zoomOut(),
+          child: const Icon(Icons.zoom_out),
+        ),
+      ],
     );
   }
 }

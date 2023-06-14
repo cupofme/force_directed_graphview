@@ -8,12 +8,14 @@ class UserNode extends StatefulWidget {
     required this.node,
     this.onPressed,
     this.onLongPressed,
+    this.onDoubleTap,
     super.key,
   });
 
   final Node node;
   final VoidCallback? onPressed;
   final VoidCallback? onLongPressed;
+  final VoidCallback? onDoubleTap;
 
   @override
   State<UserNode> createState() => _UserNodeState();
@@ -31,6 +33,7 @@ class _UserNodeState extends State<UserNode> {
         widget.onPressed?.call();
       },
       onLongPress: widget.onLongPressed,
+      onDoubleTap: widget.onDoubleTap,
       child: SizedBox(
         width: widget.node.size,
         height: widget.node.size,
