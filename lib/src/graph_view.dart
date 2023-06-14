@@ -58,6 +58,7 @@ class _GraphViewState extends State<GraphView> {
   void initState() {
     super.initState();
     widget.controller._applyLayout(widget.layoutAlgorithm, widget.size);
+    widget.controller._setTransformationController(_transformationController);
   }
 
   @override

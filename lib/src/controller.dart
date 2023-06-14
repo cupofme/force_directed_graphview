@@ -1,13 +1,15 @@
 part of 'graph_view.dart';
 
 class GraphController with ChangeNotifier {
+  static const _effectiveViewportScale = 1.2;
   final _nodes = <Node>{};
   final _edges = <Edge>{};
 
   GraphLayout? _layout;
   Size? _currentSize;
-  GraphLayoutAlgorithm? _currentAlgorithm;
   Rect? _effectiveViewport;
+  GraphLayoutAlgorithm? _currentAlgorithm;
+  TransformationController? _transformationController;
 
   Set<Node> get nodes => Set.unmodifiable(_nodes);
   Set<Edge> get edges => Set.unmodifiable(_edges);
@@ -37,6 +39,46 @@ class GraphController with ChangeNotifier {
         );
       },
     ).toSet();
+  }
+
+  void zoomIn([double factor = 1.2]) {
+    zoomBy(factor);
+  }
+
+  void zoomOut([double factor = 1 / 1.2]) {
+    zoomBy(factor);
+  }
+
+  void zoomBy(double factor) {
+    if (factor <= 0) {
+      throw ArgumentError.value(
+        factor,
+        'factor',
+        'Factor must be greater than 0',
+      );
+    }
+
+    final controller = _transformationController;
+    final viewport = _effectiveViewport;
+    if (controller == null || viewport == null) {
+      return;
+    }
+
+    final matrix = controller.value.clone();
+    final center = viewport.scale(1 / _effectiveViewportScale).center;
+
+    matrix
+      ..translate(center.dx, center.dy)
+      ..scale(factor)
+      ..translate(-center.dx, -center.dy);
+
+    controller.value = matrix;
+  }
+
+  Future<void> _setTransformationController(
+    TransformationController controller,
+  ) async {
+    _transformationController = controller;
   }
 
   Future<void> _relayout() async {
@@ -78,9 +120,10 @@ class GraphController with ChangeNotifier {
 
   void _updateViewport(Quad viewport) {
     final actualViewport = viewport.toRect();
-    // todo: configure margin
-    final newEffectiveViewport = actualViewport.scale(1.2);
+    final newEffectiveViewport = actualViewport.scale(_effectiveViewportScale);
 
+    // If the new viewport is contained in the current effective viewport,
+    // then skip the update to avoid unnecessary rebuilds
     if (_effectiveViewport != null &&
         _effectiveViewport!.containsRect(actualViewport)) {
       return;

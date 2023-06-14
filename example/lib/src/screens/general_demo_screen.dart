@@ -56,6 +56,20 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
       appBar: AppBar(
         title: const Text('General Graph Demo'),
       ),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () => _controller.zoomIn(),
+            child: const Icon(Icons.zoom_in),
+          ),
+          const SizedBox(height: 8),
+          FloatingActionButton(
+            onPressed: () => _controller.zoomOut(),
+            child: const Icon(Icons.zoom_out),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
