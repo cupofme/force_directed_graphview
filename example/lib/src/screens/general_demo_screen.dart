@@ -105,6 +105,9 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                 ),
               ),
               backgroundBuilder: (context) => const BackgroundGrid(),
+              loadingBuilder: (context) => const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
           ),
           const Text(

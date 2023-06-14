@@ -21,33 +21,16 @@ class GraphViewConfiguration {
     required this.size,
     required this.labelStyle,
     required this.backgroundBuilder,
+    required this.loadingBuilder,
   });
 
   final NodeBuilder nodeBuilder;
   final EdgePainter edgePainter;
   final LabelBuilder? labelBuilder;
   final WidgetBuilder? backgroundBuilder;
+  final WidgetBuilder? loadingBuilder;
 
   final GraphLayoutAlgorithm layoutAlgorithm;
   final Size size;
   final TextStyle labelStyle;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GraphViewConfiguration &&
-          runtimeType == other.runtimeType &&
-          nodeBuilder == other.nodeBuilder &&
-          edgePainter == other.edgePainter &&
-          backgroundBuilder == other.backgroundBuilder &&
-          layoutAlgorithm == other.layoutAlgorithm &&
-          size == other.size;
-
-  @override
-  int get hashCode =>
-      nodeBuilder.hashCode ^
-      edgePainter.hashCode ^
-      backgroundBuilder.hashCode ^
-      layoutAlgorithm.hashCode ^
-      size.hashCode;
 }

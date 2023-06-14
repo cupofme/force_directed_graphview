@@ -29,8 +29,8 @@ class GraphLayoutView extends StatelessWidget {
             animation: controller,
             builder: (context, child) {
               if (!controller.hasLayout) {
-                // todo custom builder
-                return const SizedBox.shrink();
+                return configuration.loadingBuilder?.call(context) ??
+                    const SizedBox.shrink();
               }
 
               return child!;
