@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 
+/// Configuration for the graph view.
+/// Used as a convenient way to pass multiple parameters
+/// to the internal widgets.
 @immutable
 class GraphViewConfiguration {
   const GraphViewConfiguration({
