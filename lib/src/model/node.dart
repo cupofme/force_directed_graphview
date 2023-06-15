@@ -5,12 +5,10 @@ class Node {
   const Node({
     required this.data,
     required this.size,
-    this.label,
   });
 
   final Object data;
   final double size;
-  final String? label;
 
   @override
   bool operator ==(Object other) =>
@@ -18,9 +16,8 @@ class Node {
       other is Node &&
           runtimeType == other.runtimeType &&
           data == other.data &&
-          size == other.size &&
-          label == other.label;
+          size == other.size;
 
   @override
-  int get hashCode => data.hashCode ^ size.hashCode ^ label.hashCode;
+  int get hashCode => data.hashCode ^ size.hashCode;
 }
