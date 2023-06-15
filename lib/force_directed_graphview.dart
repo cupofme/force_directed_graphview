@@ -1,5 +1,3 @@
-library force_directed_graphview;
-
 export 'src/algorithm/fruchterman_reingold_algorithm.dart';
 export 'src/algorithm/graph_layout_algorithm.dart';
 export 'src/graph_view.dart';

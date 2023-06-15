@@ -19,7 +19,7 @@ class InheritedConfiguration extends InheritedWidget {
         .controller;
   }
 
-  static GraphViewConfiguration configurationOf<T>(BuildContext context) {
+  static GraphViewConfiguration configurationOf(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<InheritedConfiguration>()!
         .configuration;
