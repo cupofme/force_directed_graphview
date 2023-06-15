@@ -22,19 +22,23 @@ class LabelsView extends StatelessWidget {
       builder: (context, _) {
         final visibleNodes = controller.getVisibleNodes();
         final layout = controller.layout;
-        final labeledNodes = visibleNodes.where((node) => node.label != null);
+
+        final nodeToLabel = {
+          for (var node in visibleNodes) node: labelBuilder(context, node),
+        };
+        nodeToLabel.removeWhere((key, value) => value == null);
 
         return CustomMultiChildLayout(
           delegate: _LabelsLayoutDelegate(
-            nodes: visibleNodes,
+            nodesMap: nodeToLabel.cast(),
             layout: layout,
           ),
           children: [
-            for (var node in labeledNodes)
+            for (var entry in nodeToLabel.entries)
               LayoutId(
-                id: node,
+                id: entry.key,
                 child: RepaintBoundary(
-                  child: configuration.labelBuilder!(context, node),
+                  child: entry.value!.child,
                 ),
               )
           ],
@@ -46,25 +50,26 @@ class LabelsView extends StatelessWidget {
 
 class _LabelsLayoutDelegate extends MultiChildLayoutDelegate {
   _LabelsLayoutDelegate({
-    required this.nodes,
+    required this.nodesMap,
     required this.layout,
   });
 
-  final Set<Node> nodes;
+  final Map<Node, LabelConfiguration> nodesMap;
   final GraphLayout layout;
 
   @override
   void performLayout(Size size) {
-    for (final node in nodes) {
-      final sizeSquare = Size.square(node.size);
-      layoutChild(node, BoxConstraints.loose(sizeSquare));
+    for (final entry in nodesMap.entries) {
+      final node = entry.key;
+      final widthDiff = node.size - entry.value.size.width;
+
+      layoutChild(node, BoxConstraints.loose(entry.value.size));
+
       positionChild(
         node,
         layout.getPosition(node) +
-            Offset(
-              -node.size / 2,
-              node.size / 2,
-            ),
+            Offset(-node.size / 2, node.size / 2) +
+            Offset(widthDiff / 2, 0),
       );
     }
   }

@@ -36,7 +36,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
         final node = Node(
           data: user,
           size: size.toDouble(),
-          label: '${user.firstName} ${user.lastName}',
         );
 
         mutator.addNode(node);
@@ -71,7 +70,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                 final newNode = Node(
                   data: User.generate(),
                   size: node.size,
-                  label: node.label,
                 );
 
                 _controller.mutate((mutator) {
@@ -93,14 +91,31 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                   ..color = Colors.black54,
               );
             },
-            labelBuilder: (context, node) => Text(
-              node.label!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: node.size / 5,
-              ),
-            ),
+            labelBuilder: (context, node) {
+              if (node.size < 50) {
+                return null;
+              }
+
+              final user = node.data as User;
+
+              return LabelConfiguration(
+                size: Size.square(node.size * 2),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      '${user.firstName} ${user.lastName}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: node.size / 5,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
             backgroundBuilder: (context) => const BackgroundGrid(),
             loadingBuilder: (context) => const Center(
               child: CircularProgressIndicator(),
@@ -153,11 +168,13 @@ class _ZoomButtons extends StatelessWidget {
       children: [
         FloatingActionButton(
           onPressed: () => controller.zoomIn(),
+          heroTag: 'zoomIn',
           child: const Icon(Icons.zoom_in),
         ),
         const SizedBox(height: 8),
         FloatingActionButton(
           onPressed: () => controller.zoomOut(),
+          heroTag: 'zoomOut',
           child: const Icon(Icons.zoom_out),
         ),
       ],
