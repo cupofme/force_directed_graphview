@@ -9,6 +9,8 @@ class Node {
   });
 
   /// The data associated with this node, should be unique.
+  /// The [Object] type is used instead of generic to allow more widget to be
+  /// constant and thus prevent unnecessary rebuilds.
   final Object data;
 
   /// The size of the node. Node will be placed in the center of the size.
