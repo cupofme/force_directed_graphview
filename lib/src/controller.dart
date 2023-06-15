@@ -196,9 +196,9 @@ class GraphController with ChangeNotifier {
 /// Wrapper around [GraphController] that allows
 /// changing the graph in a batch to avoid unnecessary rebuilds.
 class GraphMutator {
-  final GraphController controller;
-
   GraphMutator(this.controller);
+
+  final GraphController controller;
 
   void addNode(Node node) {
     controller._addNode(node);
