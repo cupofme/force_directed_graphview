@@ -1,5 +1,6 @@
 part of 'graph_view.dart';
 
+/// Controller to manipulate the [GraphView].
 class GraphController with ChangeNotifier {
   static const _effectiveViewportScale = 1.2;
   final _nodes = <Node>{};
@@ -12,17 +13,23 @@ class GraphController with ChangeNotifier {
   TransformationController? _transformationController;
 
   Set<Node> get nodes => Set.unmodifiable(_nodes);
+
   Set<Edge> get edges => Set.unmodifiable(_edges);
+
   GraphLayout get layout =>
       _layout ?? (throw StateError('Graph is not laid out yet'));
+
   bool get hasLayout => _layout != null;
 
+  /// Updates the graph
   void mutate(void Function(GraphMutator mutator) callback) {
     callback(GraphMutator(this));
     notifyListeners();
     _relayout();
   }
 
+  /// Returns s set of nodes that are currently visible on the screen.
+  /// Uses 1.2 times the viewport size to determine visibility.
   Set<Node> getVisibleNodes() {
     final viewport = _effectiveViewport;
     final layout = _layout;
@@ -41,6 +48,7 @@ class GraphController with ChangeNotifier {
     ).toSet();
   }
 
+  /// Instantly jumps to the given node.
   void jumpToNode(Node node) {
     final controller = _transformationController;
     final layout = _layout;
@@ -60,10 +68,13 @@ class GraphController with ChangeNotifier {
     controller.value = matrix;
   }
 
+  /// Instantly zoom in by a given factor.
   void zoomIn([double factor = 1.2]) => zoomBy(factor);
 
+  /// Instantly zoom out by a given factor.
   void zoomOut([double factor = 1 / 1.2]) => zoomBy(factor);
 
+  /// Instantly zooms by a given factor.
   void zoomBy(double factor) {
     if (factor <= 0) {
       throw ArgumentError.value(
@@ -185,9 +196,9 @@ class GraphController with ChangeNotifier {
 /// Wrapper around [GraphController] that allows
 /// changing the graph in a batch to avoid unnecessary rebuilds.
 class GraphMutator {
-  final GraphController controller;
-
   GraphMutator(this.controller);
+
+  final GraphController controller;
 
   void addNode(Node node) {
     controller._addNode(node);

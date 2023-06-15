@@ -3,7 +3,9 @@ import 'dart:ui';
 
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 
+/// An implementation of Fruchterman-Reingold algorithm
 class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
+  /// Creates a new instance of [FruchtermanReingoldAlgorithm]
   const FruchtermanReingoldAlgorithm({
     this.iterations = 100,
     this.relayoutIterationsMultiplier = 0.1,
@@ -161,18 +163,22 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     }
 
     // Prevent nodes from overlapping
-    // for (final v in nodes) {
-    //   for (final u in nodes) {
-    //     if (identical(v, u)) continue;
+    for (final v in nodes) {
+      for (final u in nodes) {
+        if (identical(v, u)) continue;
 
-    //     final delta = layoutBuilder.getNodePosition(v) - layoutBuilder.getNodePosition(u);
-    //     final distance = delta.distance;
+        final delta =
+            layoutBuilder.getNodePosition(v) - layoutBuilder.getNodePosition(u);
+        final distance = delta.distance;
 
-    //     if (distance < v.size / 2 + u.size / 2) {
-    //       layoutBuilder.translateNode(v, (delta / distance) * (distance - v.size / 2 - u.size / 2));
-    //     }
-    //   }
-    // }
+        if (distance < v.size / 2 + u.size / 2) {
+          layoutBuilder.translateNode(
+            v,
+            (delta / distance) * (distance - v.size / 2 - u.size / 2),
+          );
+        }
+      }
+    }
 
     // Prevent nodes from escaping the canvas
     for (final v in nodes) {

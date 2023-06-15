@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 import 'package:vector_math/vector_math_64.dart';
 
-extension OffsetExtensions on Offset {
+extension OffsetExtension on Offset {
   Vector2 toVector2() => Vector2(dx, dy);
 }
 
-extension QuadExtensions on Quad {
+extension QuadExtension on Quad {
   Rect toRect() => Rect.fromLTRB(
         point0.x,
         point0.y,
@@ -16,7 +16,7 @@ extension QuadExtensions on Quad {
       );
 }
 
-extension RectExtensions on Rect {
+extension RectExtension on Rect {
   bool containsNode(Node node, Offset position) {
     final nodeRect = Rect.fromCircle(
       center: position,
@@ -26,6 +26,7 @@ extension RectExtensions on Rect {
     return nodeRect.overlaps(this);
   }
 
+  /// Scale the rect from the center
   Rect scale(double scale) {
     final center = this.center;
     final size = this.size * scale;

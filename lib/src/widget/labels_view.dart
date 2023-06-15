@@ -25,8 +25,7 @@ class LabelsView extends StatelessWidget {
 
         final nodeToLabel = {
           for (var node in visibleNodes) node: labelBuilder(context, node),
-        };
-        nodeToLabel.removeWhere((key, value) => value == null);
+        }..removeWhere((key, value) => value == null);
 
         return CustomMultiChildLayout(
           delegate: _LabelsLayoutDelegate(
