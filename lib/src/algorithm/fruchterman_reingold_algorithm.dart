@@ -94,10 +94,10 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
       if (showIterations) {
         yield layoutBuilder.build();
-
-        // To prevent the UI from freezing
-        await Future<void>.delayed(Duration.zero);
       }
+
+      // To prevent the UI from freezing
+      await Future<void>.delayed(Duration.zero);
     }
 
     if (!showIterations) {
