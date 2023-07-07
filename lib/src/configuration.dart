@@ -13,14 +13,12 @@ class GraphViewConfiguration {
     required this.layoutAlgorithm,
     required this.size,
     required this.backgroundBuilder,
-    required this.loadingBuilder,
   });
 
   final NodeBuilder nodeBuilder;
   final EdgePainter edgePainter;
   final LabelBuilder? labelBuilder;
   final WidgetBuilder? backgroundBuilder;
-  final WidgetBuilder? loadingBuilder;
 
   final GraphLayoutAlgorithm layoutAlgorithm;
   final Size size;

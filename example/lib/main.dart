@@ -1,5 +1,5 @@
-import 'package:example/src/screens/general_demo_screen.dart';
-import 'package:example/src/screens/large_demo_screen.dart';
+import 'package:example/src/screen/general_demo_screen.dart';
+import 'package:example/src/screen/large_demo_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

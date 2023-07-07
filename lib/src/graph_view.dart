@@ -19,7 +19,7 @@ class GraphView extends StatefulWidget {
     required this.layoutAlgorithm,
     this.labelBuilder,
     this.backgroundBuilder,
-    this.loadingBuilder,
+    this.loaderBuilder,
     this.minScale = 0.5,
     this.maxScale = 2,
     super.key,
@@ -40,7 +40,7 @@ class GraphView extends StatefulWidget {
 
   /// The builder that builds the loading widget before the first
   /// layout is applied. If null, displays [SizedBox.shrink()]
-  final WidgetBuilder? loadingBuilder;
+  final WidgetBuilder? loaderBuilder;
 
   /// The controller that controls the graph.
   final GraphController controller;
@@ -63,6 +63,7 @@ class GraphView extends StatefulWidget {
 
 class _GraphViewState extends State<GraphView> {
   final _transformationController = TransformationController();
+  var _isLayoutApplied = false;
 
   @override
   void didUpdateWidget(covariant GraphView oldWidget) {
@@ -78,10 +79,28 @@ class _GraphViewState extends State<GraphView> {
     super.initState();
     widget.controller._applyLayout(widget.layoutAlgorithm, widget.size);
     widget.controller._setTransformationController(_transformationController);
+    widget.controller.addListener(_onControllerChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onControllerChanged);
+    super.dispose();
+  }
+
+  void _onControllerChanged() {
+    final hasLayout = widget.controller.hasLayout;
+    if (hasLayout != _isLayoutApplied) {
+      setState(() => _isLayoutApplied = hasLayout);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_isLayoutApplied) {
+      return widget.loaderBuilder?.call(context) ?? const SizedBox.shrink();
+    }
+
     return InheritedConfiguration(
       controller: widget.controller,
       configuration: GraphViewConfiguration(
@@ -91,7 +110,6 @@ class _GraphViewState extends State<GraphView> {
         layoutAlgorithm: widget.layoutAlgorithm,
         size: widget.size,
         backgroundBuilder: widget.backgroundBuilder,
-        loadingBuilder: widget.loadingBuilder,
       ),
       child: InteractiveViewer.builder(
         transformationController: _transformationController,

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:example/src/model/user.dart';
-import 'package:example/src/widgets/background_grid.dart';
-import 'package:example/src/widgets/user_node.dart';
+import 'package:example/src/widget/background_grid.dart';
+import 'package:example/src/widget/user_node.dart';
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 
