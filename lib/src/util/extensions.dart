@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs
 import 'dart:ui';
 
 import 'package:force_directed_graphview/force_directed_graphview.dart';

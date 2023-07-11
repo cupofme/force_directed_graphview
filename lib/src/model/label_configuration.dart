@@ -4,6 +4,7 @@ import 'package:force_directed_graphview/src/model/builders.dart';
 /// Configuration for a label, used by [LabelBuilder].
 /// Necessary to determine the size of the label in build time.
 class LabelConfiguration {
+  /// {@nodoc}
   const LabelConfiguration({
     required this.child,
     required this.size,

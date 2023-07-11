@@ -2,7 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 import 'package:force_directed_graphview/src/widget/inherited_configuration.dart';
 
+/// {@nodoc}
 class NodesView extends StatelessWidget {
+  /// {@nodoc}
   const NodesView({
     super.key,
   });

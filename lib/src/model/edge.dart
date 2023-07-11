@@ -4,15 +4,16 @@ import 'package:force_directed_graphview/src/model/node.dart';
 /// Model that represents a edge in the graph.
 @immutable
 class Edge {
+  /// {@nodoc}
   const Edge(
     this.source,
     this.target,
   );
 
-  /// The source node of the edge.
+  /// Start node of the edge
   final Node source;
 
-  /// The target node of the edge.
+  /// End node of the edge
   final Node target;
 
   @override

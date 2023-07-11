@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 /// Model that represents a node in the graph.
 @immutable
 class Node {
+  /// {@nodoc}
   const Node({
     required this.data,
     required this.size,
