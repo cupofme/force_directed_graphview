@@ -12,16 +12,21 @@ class GraphController with ChangeNotifier {
   GraphLayoutAlgorithm? _currentAlgorithm;
   TransformationController? _transformationController;
 
+  /// {@nodoc}
   Set<Node> get nodes => Set.unmodifiable(_nodes);
 
+  /// {@nodoc}
   Set<Edge> get edges => Set.unmodifiable(_edges);
 
+  /// Returns the current layout. Throws [StateError]
+  /// if the graph is not laid out yet.
   GraphLayout get layout =>
       _layout ?? (throw StateError('Graph is not laid out yet'));
 
+  /// Checks whether the graph is laid out.
   bool get hasLayout => _layout != null;
 
-  /// Updates the graph
+  /// Updates the graph using [GraphMutator]
   void mutate(void Function(GraphMutator mutator) callback) {
     callback(GraphMutator(this));
     notifyListeners();
@@ -196,22 +201,28 @@ class GraphController with ChangeNotifier {
 /// Wrapper around [GraphController] that allows
 /// changing the graph in a batch to avoid unnecessary rebuilds.
 class GraphMutator {
+  /// {@nodoc}
   GraphMutator(this.controller);
 
+  /// {@nodoc}
   final GraphController controller;
 
+  /// {@nodoc}
   void addNode(Node node) {
     controller._addNode(node);
   }
 
+  /// {@nodoc}
   void addEdge(Edge edge) {
     controller._addEdge(edge);
   }
 
+  /// {@nodoc}
   void removeNode(Node node) {
     controller._removeNode(node);
   }
 
+  /// {@nodoc}
   void removeEdge(Edge edge) {
     controller._removeEdge(edge);
   }

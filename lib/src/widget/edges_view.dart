@@ -3,7 +3,9 @@ import 'package:force_directed_graphview/force_directed_graphview.dart';
 import 'package:force_directed_graphview/src/configuration.dart';
 import 'package:force_directed_graphview/src/widget/inherited_configuration.dart';
 
+/// {@nodoc}
 class EdgesView extends StatelessWidget {
+  /// {@nodoc}
   const EdgesView({
     super.key,
   });

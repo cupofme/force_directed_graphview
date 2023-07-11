@@ -11,6 +11,7 @@ part 'controller.dart';
 
 /// A widget that displays a graph.
 class GraphView extends StatefulWidget {
+  /// {@nodoc}
   const GraphView({
     required this.nodeBuilder,
     required this.edgePainter,
