@@ -190,11 +190,11 @@ class _CustomEdgePainter implements EdgePainter {
     Canvas canvas,
     Edge edge,
     Offset sourcePosition,
-    Offset targetPosition,
+    Offset destinationPosition,
   ) {
     canvas.drawLine(
       sourcePosition,
-      targetPosition,
+      destinationPosition,
       Paint()
         ..color = (edge.data as Color?) ?? Colors.black
         ..strokeWidth = 2,

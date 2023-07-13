@@ -9,6 +9,6 @@ abstract class EdgePainter {
     Canvas canvas,
     Edge edge,
     Offset sourcePosition,
-    Offset targetPosition,
+    Offset destinationPosition,
   );
 }

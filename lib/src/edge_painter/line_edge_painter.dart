@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
-import 'package:force_directed_graphview/src/edge_painter/edge_painter.dart';
 
 /// A painter for painting edges as lines. Draws a straight line between
 @immutable
@@ -22,11 +21,11 @@ class LineEdgePainter implements EdgePainter {
     Canvas canvas,
     Edge edge,
     Offset sourcePosition,
-    Offset targetPosition,
+    Offset destinationPosition,
   ) {
     canvas.drawLine(
       sourcePosition,
-      targetPosition,
+      destinationPosition,
       Paint()
         ..color = color
         ..strokeWidth = thickness,
