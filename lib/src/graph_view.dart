@@ -14,10 +14,10 @@ class GraphView extends StatefulWidget {
   /// {@nodoc}
   const GraphView({
     required this.nodeBuilder,
-    required this.edgePainter,
     required this.controller,
     required this.size,
     required this.layoutAlgorithm,
+    this.edgePainter = const LineEdgePainter(),
     this.labelBuilder,
     this.backgroundBuilder,
     this.loaderBuilder,

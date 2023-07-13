@@ -82,15 +82,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
               ),
               onDoubleTap: () => _controller.jumpToNode(node),
             ),
-            edgePainter: (canvas, edge, sourcePosition, targetPosition) {
-              canvas.drawLine(
-                sourcePosition,
-                targetPosition,
-                Paint()
-                  ..strokeWidth = edge.source.size / edge.target.size
-                  ..color = Colors.black54,
-              );
-            },
             labelBuilder: (context, node) {
               if (node.size < 50) {
                 return null;

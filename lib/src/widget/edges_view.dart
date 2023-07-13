@@ -41,7 +41,7 @@ class _EdgesPainter extends CustomPainter {
     final edges = controller.edges;
 
     for (final edge in edges) {
-      configuration.edgePainter(
+      configuration.edgePainter.paint(
         canvas,
         edge,
         layout.getPosition(edge.source),
