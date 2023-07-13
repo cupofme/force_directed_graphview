@@ -63,6 +63,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
         layoutAlgorithm: const GridLayoutAlgorithm(),
         nodeBuilder: (context, node) => UserNode(node: node),
         backgroundBuilder: (context) => const BackgroundGrid(),
+        edgePainter: const LineEdgePainter(color: Colors.black54),
       ),
     );
   }
