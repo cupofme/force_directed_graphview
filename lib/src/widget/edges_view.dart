@@ -45,7 +45,7 @@ class _EdgesPainter extends CustomPainter {
         canvas,
         edge,
         layout.getPosition(edge.source),
-        layout.getPosition(edge.target),
+        layout.getPosition(edge.destination),
       );
     }
   }

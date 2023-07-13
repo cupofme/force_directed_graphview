@@ -176,12 +176,12 @@ class GraphController with ChangeNotifier {
       throw StateError('Node $node is not in the graph');
     }
     _nodes.remove(node);
-    _edges.removeWhere((edge) => edge.source == node || edge.target == node);
+    _edges.removeWhere((edge) => edge.source == node || edge.source == node);
   }
 
   void _addEdge(Edge edge) {
-    if (!_hasNode(edge.source) || !_hasNode(edge.target)) {
-      throw StateError('Source or target node is not in the graph');
+    if (!_hasNode(edge.source) || !_hasNode(edge.destination)) {
+      throw StateError('Source or destination node is not in the graph');
     }
     _edges.add(edge);
   }

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:example/src/model/user.dart';
 import 'package:example/src/widget/background_grid.dart';
 import 'package:example/src/widget/user_node.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 
@@ -42,7 +43,13 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
 
         for (final other in _nodes) {
           if (other != node && _random.nextInt(nodeCount + 40 - size) == 0) {
-            mutator.addEdge(Edge(node, other));
+            mutator.addEdge(
+              Edge(
+                node,
+                other,
+                data: Colors.black.withOpacity(random.decimal()),
+              ),
+            );
           }
         }
       }
@@ -73,8 +80,9 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                 );
 
                 _controller.mutate((mutator) {
-                  mutator.addNode(newNode);
-                  mutator.addEdge(Edge(node, newNode));
+                  mutator
+                    ..addNode(newNode)
+                    ..addEdge(Edge(node, newNode));
                 });
               },
               onLongPressed: () => _controller.mutate(
@@ -82,13 +90,13 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
               ),
               onDoubleTap: () => _controller.jumpToNode(node),
             ),
-            edgePainter: (canvas, edge, sourcePosition, targetPosition) {
+            edgePainter: (canvas, edge, sourcePosition, destinationPosition) {
               canvas.drawLine(
                 sourcePosition,
-                targetPosition,
+                destinationPosition,
                 Paint()
-                  ..strokeWidth = edge.source.size / edge.target.size
-                  ..color = Colors.black54,
+                  ..strokeWidth = 2
+                  ..color = (edge.data as Color?) ?? Colors.black,
               );
             },
             labelBuilder: (context, node) {
@@ -167,13 +175,13 @@ class _ZoomButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         FloatingActionButton(
-          onPressed: () => controller.zoomIn(),
+          onPressed: controller.zoomIn,
           heroTag: 'zoomIn',
           child: const Icon(Icons.zoom_in),
         ),
         const SizedBox(height: 8),
         FloatingActionButton(
-          onPressed: () => controller.zoomOut(),
+          onPressed: controller.zoomOut,
           heroTag: 'zoomOut',
           child: const Icon(Icons.zoom_out),
         ),

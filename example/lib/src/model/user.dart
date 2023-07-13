@@ -9,15 +9,15 @@ class User {
     required this.lastName,
   });
 
-  final int id;
-  final String firstName;
-  final String lastName;
-
-  static User generate() {
+  factory User.generate() {
     return User(
       id: _faker.randomGenerator.integer(100000),
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
     );
   }
+
+  final int id;
+  final String firstName;
+  final String lastName;
 }

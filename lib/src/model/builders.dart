@@ -14,8 +14,8 @@ typedef NodeBuilder = Widget Function(
 typedef EdgePainter = void Function(
   Canvas canvas,
   Edge edge,
-  Offset sourcePosition,
-  Offset targetPosition,
+  Offset srcPos,
+  Offset dstPos,
 );
 
 /// Callback for building a widget for a label,
