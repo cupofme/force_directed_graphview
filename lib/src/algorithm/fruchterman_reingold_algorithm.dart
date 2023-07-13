@@ -9,7 +9,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
   const FruchtermanReingoldAlgorithm({
     this.iterations = 100,
     this.relayoutIterationsMultiplier = 0.1,
-    this.showIterations = true,
+    this.showIterations = false,
   });
 
   /// The number of iterations to run the algorithm
@@ -140,14 +140,14 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     // Calculate attractive forces.
     for (final edge in edges) {
       final sourcePos = layoutBuilder.getNodePosition(edge.source);
-      final targetPos = layoutBuilder.getNodePosition(edge.target);
+      final destPos = layoutBuilder.getNodePosition(edge.destination);
 
-      final delta = sourcePos - targetPos;
+      final delta = sourcePos - destPos;
       final distance = delta.distance;
 
       displacements[edge.source] = displacements[edge.source]! -
           (delta / distance) * attraction(distance);
-      displacements[edge.target] = displacements[edge.target]! +
+      displacements[edge.destination] = displacements[edge.destination]! +
           (delta / distance) * attraction(distance);
     }
 

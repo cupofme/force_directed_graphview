@@ -62,10 +62,10 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
         maxScale: 10,
         layoutAlgorithm: const GridLayoutAlgorithm(),
         nodeBuilder: (context, node) => UserNode(node: node),
-        edgePainter: (canvas, edge, sourcePosition, targetPosition) {
+        edgePainter: (canvas, edge, sourcePosition, destinationPosition) {
           canvas.drawLine(
             sourcePosition,
-            targetPosition,
+            destinationPosition,
             Paint()..color = Colors.black54,
           );
         },

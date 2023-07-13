@@ -26,7 +26,7 @@ class _GridBackgroundPainter extends CustomPainter {
 
         canvas.drawRect(
           Rect.fromLTWH(left, top, cellSize, cellSize),
-          (i + j) % 2 == 0 ? whitePaint : blackPaint,
+          (i + j).isEven ? whitePaint : blackPaint,
         );
       }
     }
