@@ -68,6 +68,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
           GraphView(
             controller: _controller,
             size: const Size.square(3000),
+            edgePainter: const _CustomEdgePainter(),
             layoutAlgorithm: const FruchtermanReingoldAlgorithm(
               iterations: 500,
             ),
@@ -90,15 +91,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
               ),
               onDoubleTap: () => _controller.jumpToNode(node),
             ),
-            edgePainter: (canvas, edge, sourcePosition, destinationPosition) {
-              canvas.drawLine(
-                sourcePosition,
-                destinationPosition,
-                Paint()
-                  ..strokeWidth = 2
-                  ..color = (edge.data as Color?) ?? Colors.black,
-              );
-            },
             labelBuilder: (context, node) {
               if (node.size < 50) {
                 return null;
@@ -186,6 +178,26 @@ class _ZoomButtons extends StatelessWidget {
           child: const Icon(Icons.zoom_out),
         ),
       ],
+    );
+  }
+}
+
+class _CustomEdgePainter implements EdgePainter {
+  const _CustomEdgePainter();
+
+  @override
+  void paint(
+    Canvas canvas,
+    Edge edge,
+    Offset sourcePosition,
+    Offset destinationPosition,
+  ) {
+    canvas.drawLine(
+      sourcePosition,
+      destinationPosition,
+      Paint()
+        ..color = (edge.data as Color?) ?? Colors.black
+        ..strokeWidth = 2,
     );
   }
 }

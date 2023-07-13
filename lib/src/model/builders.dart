@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:force_directed_graphview/src/model/edge.dart';
 import 'package:force_directed_graphview/src/model/label_configuration.dart';
 import 'package:force_directed_graphview/src/model/node.dart';
 
@@ -7,15 +6,6 @@ import 'package:force_directed_graphview/src/model/node.dart';
 typedef NodeBuilder = Widget Function(
   BuildContext context,
   Node node,
-);
-
-/// Callback for painting an edge using a [Canvas] API.
-/// Provided positions are the centers of the two connected nodes.
-typedef EdgePainter = void Function(
-  Canvas canvas,
-  Edge edge,
-  Offset srcPos,
-  Offset dstPos,
 );
 
 /// Callback for building a widget for a label,

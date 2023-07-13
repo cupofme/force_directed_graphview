@@ -1,5 +1,7 @@
 export 'src/algorithm/fruchterman_reingold_algorithm.dart';
 export 'src/algorithm/graph_layout_algorithm.dart';
+export 'src/edge_painter/edge_painter.dart';
+export 'src/edge_painter/line_edge_painter.dart';
 export 'src/graph_view.dart';
 export 'src/model/builders.dart';
 export 'src/model/edge.dart';
