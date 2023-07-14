@@ -15,7 +15,7 @@ class GraphView extends StatefulWidget {
   const GraphView({
     required this.nodeBuilder,
     required this.controller,
-    required this.size,
+    required this.canvasSize,
     required this.layoutAlgorithm,
     this.edgePainter = const LineEdgePainter(),
     this.labelBuilder,
@@ -49,8 +49,8 @@ class GraphView extends StatefulWidget {
   /// The layout algorithm that is used to layout the graph.
   final GraphLayoutAlgorithm layoutAlgorithm;
 
-  /// The size of the graph. May exceed the size of the screen.
-  final Size size;
+  /// The size of the graph canvas. May exceed the size of the screen.
+  final GraphCanvasSize canvasSize;
 
   /// The minimum scale of the [InteractiveViewer] that wraps the graph.
   final double minScale;
@@ -70,15 +70,15 @@ class _GraphViewState extends State<GraphView> {
   void didUpdateWidget(covariant GraphView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.layoutAlgorithm != widget.layoutAlgorithm ||
-        oldWidget.size != widget.size) {
-      widget.controller._applyLayout(widget.layoutAlgorithm, widget.size);
+        oldWidget.canvasSize != widget.canvasSize) {
+      widget.controller._applyLayout(widget.layoutAlgorithm, widget.canvasSize);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    widget.controller._applyLayout(widget.layoutAlgorithm, widget.size);
+    widget.controller._applyLayout(widget.layoutAlgorithm, widget.canvasSize);
     widget.controller._setTransformationController(_transformationController);
     widget.controller.addListener(_onControllerChanged);
   }
@@ -90,7 +90,7 @@ class _GraphViewState extends State<GraphView> {
   }
 
   void _onControllerChanged() {
-    final hasLayout = widget.controller.hasLayout;
+    final hasLayout = widget.controller.canLayout;
     if (hasLayout != _isLayoutApplied) {
       setState(() => _isLayoutApplied = hasLayout);
     }
@@ -109,7 +109,6 @@ class _GraphViewState extends State<GraphView> {
         edgePainter: widget.edgePainter,
         labelBuilder: widget.labelBuilder,
         layoutAlgorithm: widget.layoutAlgorithm,
-        size: widget.size,
         backgroundBuilder: widget.backgroundBuilder,
       ),
       child: InteractiveViewer.builder(

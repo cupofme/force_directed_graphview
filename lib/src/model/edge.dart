@@ -1,9 +1,10 @@
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
+import 'package:meta/meta.dart';
 
 /// Model that represents a edge in the graph.
 @immutable
-class Edge {
+class Edge with EquatableMixin {
   /// {@nodoc}
   const Edge(
     this.source,
@@ -22,14 +23,5 @@ class Edge {
   final Object? data;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Edge &&
-          runtimeType == other.runtimeType &&
-          source == other.source &&
-          destination == other.destination &&
-          data == other.data;
-
-  @override
-  int get hashCode => source.hashCode ^ destination.hashCode;
+  List<Object?> get props => [source, destination, data];
 }

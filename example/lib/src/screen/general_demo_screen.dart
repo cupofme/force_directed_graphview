@@ -68,10 +68,11 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
         children: [
           GraphView(
             controller: _controller,
-            size: const Size.square(3000),
+            canvasSize: const GraphCanvasSize.proportional(20),
             edgePainter: const _CustomEdgePainter(),
             layoutAlgorithm: const FruchtermanReingoldAlgorithm(
               iterations: 500,
+              showIterations: true,
             ),
             nodeBuilder: (context, node) => UserNode(
               node: node,

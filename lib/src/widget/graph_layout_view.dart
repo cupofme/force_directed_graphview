@@ -14,10 +14,11 @@ class GraphLayoutView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final configuration = InheritedConfiguration.configurationOf(context);
+    final controller = InheritedConfiguration.controllerOf(context);
     final backgroundBuilder = configuration.backgroundBuilder;
 
     return SizedBox.fromSize(
-      size: configuration.size,
+      size: controller.canvasSize,
       child: Stack(
         fit: StackFit.expand,
         children: [

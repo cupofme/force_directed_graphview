@@ -11,7 +11,7 @@
 
 This library is mostly designed to display graphs using force-directed layouts, but it can be used for other purposes as well with the implementation of a custom layout algorithm. Currently nodes can't be dragged. The entire graph can be dragged and zoomed using underlying [InteractiveViewer](https://api.flutter.dev/flutter/widgets/InteractiveViewer-class.html) widget.
 
-**The library is still in the development and not ready for production use. The API is not stable and can change at any time.**
+**🛑 The library is still in the development and not ready for production use. The API is not stable and can change at any time 🛑.**
 
 ## Usage
 

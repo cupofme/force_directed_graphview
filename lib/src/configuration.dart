@@ -12,7 +12,6 @@ class GraphViewConfiguration {
     required this.edgePainter,
     required this.labelBuilder,
     required this.layoutAlgorithm,
-    required this.size,
     required this.backgroundBuilder,
   });
 
@@ -30,7 +29,4 @@ class GraphViewConfiguration {
 
   /// {@nodoc}
   final GraphLayoutAlgorithm layoutAlgorithm;
-
-  /// {@nodoc}
-  final Size size;
 }
