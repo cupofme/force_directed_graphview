@@ -29,7 +29,6 @@ class GraphController with ChangeNotifier {
   /// Updates the graph using [GraphMutator]
   void mutate(void Function(GraphMutator mutator) callback) {
     callback(GraphMutator(this));
-    notifyListeners();
     _relayout();
   }
 
@@ -122,7 +121,7 @@ class GraphController with ChangeNotifier {
 
     final layoutStream = currentAlgorithm.relayout(
       existingLayout: layout,
-      nodes: nodes,
+      nodes: _nodes,
       edges: _edges,
       size: currentSize,
     );
@@ -138,7 +137,7 @@ class GraphController with ChangeNotifier {
     _currentSize = size;
 
     final layoutStream = algorithm.layout(
-      nodes: nodes,
+      nodes: _nodes,
       edges: _edges,
       size: size,
     );
@@ -175,8 +174,9 @@ class GraphController with ChangeNotifier {
     if (!_hasNode(node)) {
       throw StateError('Node $node is not in the graph');
     }
+    _edges
+        .removeWhere((edge) => edge.source == node || edge.destination == node);
     _nodes.remove(node);
-    _edges.removeWhere((edge) => edge.source == node || edge.source == node);
   }
 
   void _addEdge(Edge edge) {
