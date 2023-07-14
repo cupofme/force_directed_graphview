@@ -4,15 +4,20 @@ version: 0.0.1
 homepage:
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
-  flutter: ">=2.0.0"
+  sdk: ^3.0.0
+  flutter: ^3.10.0
 
 dependencies:
   flutter:
     sdk: flutter
 
-  vector_math: ^2.1.4
-  collection: ^1.17.0
+  equatable: ^2.0.5
+
+  # The following packages are direct dependencies of Flutter, 
+  # so we don't need to specify version
+  meta: any
+  vector_math: any
+  collection: any
 
 dev_dependencies:
   flutter_test:

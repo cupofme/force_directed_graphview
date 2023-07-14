@@ -23,8 +23,13 @@ class GraphController with ChangeNotifier {
   GraphLayout get layout =>
       _layout ?? (throw StateError('Graph is not laid out yet'));
 
-  /// Checks whether the graph is laid out.
-  bool get hasLayout => _layout != null;
+  /// Return the current size of the graph canvas. Throws [StateError]
+  /// if the size is not available yet.
+  Size get canvasSize =>
+      _currentSize ?? (throw StateError('Size is not available yet'));
+
+  /// Checks whether the graph is laid out and the size is available.
+  bool get canLayout => _layout != null && _currentSize != null;
 
   /// Updates the graph using [GraphMutator]
   void mutate(void Function(GraphMutator mutator) callback) {
@@ -105,9 +110,8 @@ class GraphController with ChangeNotifier {
     controller.value = matrix;
   }
 
-  Future<void> _setTransformationController(
-    TransformationController controller,
-  ) async {
+  // ignore: use_setters_to_change_properties
+  void _setTransformationController(TransformationController controller) {
     _transformationController = controller;
   }
 
@@ -132,14 +136,20 @@ class GraphController with ChangeNotifier {
     }
   }
 
-  Future<void> _applyLayout(GraphLayoutAlgorithm algorithm, Size size) async {
+  Future<void> _applyLayout(
+    GraphLayoutAlgorithm algorithm,
+    GraphCanvasSize size,
+  ) async {
     _currentAlgorithm = algorithm;
-    _currentSize = size;
+    _currentSize = size.resolve(
+      nodes: _nodes,
+      edges: _edges,
+    );
 
     final layoutStream = algorithm.layout(
       nodes: _nodes,
       edges: _edges,
-      size: size,
+      size: canvasSize,
     );
 
     await for (final layout in layoutStream) {

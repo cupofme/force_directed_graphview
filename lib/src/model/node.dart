@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 /// Model that represents a node in the graph.
 @immutable
-class Node {
+class Node with EquatableMixin {
   /// {@nodoc}
   const Node({
     required this.data,
@@ -20,13 +21,5 @@ class Node {
   final double size;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Node &&
-          runtimeType == other.runtimeType &&
-          data == other.data &&
-          size == other.size;
-
-  @override
-  int get hashCode => data.hashCode ^ size.hashCode;
+  List<Object?> get props => [data, size];
 }

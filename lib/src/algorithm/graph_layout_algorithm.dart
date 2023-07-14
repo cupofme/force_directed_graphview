@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:force_directed_graphview/src/algorithm/fruchterman_reingold_algorithm.dart';
 import 'package:force_directed_graphview/src/model/edge.dart';
 import 'package:force_directed_graphview/src/model/graph_layout.dart';
 import 'package:force_directed_graphview/src/model/node.dart';
+import 'package:meta/meta.dart';
 
 /// An interface for graph layout algorithm
 ///

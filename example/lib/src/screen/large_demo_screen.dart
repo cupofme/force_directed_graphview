@@ -59,7 +59,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
       floatingActionButton: ZoomButtons(controller: _controller),
       body: GraphView(
         controller: _controller,
-        size: const Size.square(7000),
+        canvasSize: const GraphCanvasSize.fixed(Size.square(7000)),
         minScale: 0.1,
         maxScale: 10,
         layoutAlgorithm: const GridLayoutAlgorithm(),
