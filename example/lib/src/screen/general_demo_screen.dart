@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:example/src/model/user.dart';
 import 'package:example/src/widget/background_grid.dart';
 import 'package:example/src/widget/user_node.dart';
+import 'package:example/src/widget/zoom_buttons.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
@@ -17,7 +18,7 @@ class GeneralDemoScreen extends StatefulWidget {
 }
 
 class GeneralDemoScreenState extends State<GeneralDemoScreen> {
-  late final _controller = GraphController();
+  final _controller = GraphController();
 
   Set<Node> get _nodes => _controller.nodes;
 
@@ -62,7 +63,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
       appBar: AppBar(
         title: const Text('General Graph Demo'),
       ),
-      floatingActionButton: _ZoomButtons(controller: _controller),
+      floatingActionButton: ZoomButtons(controller: _controller),
       body: Stack(
         children: [
           GraphView(
@@ -133,51 +134,28 @@ class _Instructions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Positioned(
-      bottom: 16,
-      left: 16,
+    return Positioned(
+      bottom: 8,
+      left: 8,
       child: DefaultTextStyle(
-        style: TextStyle(
-          fontSize: 24,
+        style: const TextStyle(
+          fontSize: 20,
           fontWeight: FontWeight.bold,
+          color: Colors.black,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Tap to add a node'),
-            Text('Long press to delete a node'),
-            Text('Double tap to focus on node')
-          ],
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          color: Colors.white,
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Tap to add a node'),
+              Text('Long press to delete a node'),
+              Text('Double tap to focus on node')
+            ],
+          ),
         ),
       ),
-    );
-  }
-}
-
-class _ZoomButtons extends StatelessWidget {
-  const _ZoomButtons({
-    required this.controller,
-  });
-
-  final GraphController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        FloatingActionButton(
-          onPressed: controller.zoomIn,
-          heroTag: 'zoomIn',
-          child: const Icon(Icons.zoom_in),
-        ),
-        const SizedBox(height: 8),
-        FloatingActionButton(
-          onPressed: controller.zoomOut,
-          heroTag: 'zoomOut',
-          child: const Icon(Icons.zoom_out),
-        ),
-      ],
     );
   }
 }
