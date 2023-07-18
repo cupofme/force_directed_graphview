@@ -20,8 +20,8 @@ sealed class GraphCanvasSize {
 
   /// Resolves the size of the graph canvas.
   Size resolve({
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
   });
 }
 
@@ -38,8 +38,8 @@ class FixedGraphViewSize with EquatableMixin implements GraphCanvasSize {
 
   @override
   Size resolve({
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
   }) {
     return size;
   }
@@ -63,8 +63,8 @@ class ProportionalGraphViewSize with EquatableMixin implements GraphCanvasSize {
 
   @override
   Size resolve({
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
   }) {
     final area = nodes.fold<double>(
       0,

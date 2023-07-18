@@ -10,7 +10,8 @@ import 'package:vector_math/vector_math_64.dart';
 part 'controller.dart';
 
 /// A widget that displays a graph.
-class GraphView extends StatefulWidget {
+class GraphView<N extends NodeBase, E extends EdgeBase<N>>
+    extends StatefulWidget {
   /// {@nodoc}
   const GraphView({
     required this.nodeBuilder,
@@ -27,13 +28,13 @@ class GraphView extends StatefulWidget {
   });
 
   /// The builder that builds the visual representation of the node.
-  final NodeBuilder nodeBuilder;
+  final NodeViewBuilder<N> nodeBuilder;
 
   /// The painter that paints the edge.
-  final EdgePainter edgePainter;
+  final EdgePainter<N, E> edgePainter;
 
   /// The builder that builds the label of the node.
-  final LabelBuilder? labelBuilder;
+  final LabelBuilder<N>? labelBuilder;
 
   /// The builder that builds the background of the graph.
   /// If null, the background will be transparent.
@@ -44,7 +45,7 @@ class GraphView extends StatefulWidget {
   final WidgetBuilder? loaderBuilder;
 
   /// The controller that controls the graph.
-  final GraphController controller;
+  final GraphController<N, E> controller;
 
   /// The layout algorithm that is used to layout the graph.
   final GraphLayoutAlgorithm layoutAlgorithm;
@@ -59,15 +60,16 @@ class GraphView extends StatefulWidget {
   final double maxScale;
 
   @override
-  State<GraphView> createState() => _GraphViewState();
+  State<GraphView<N, E>> createState() => _GraphViewState<N, E>();
 }
 
-class _GraphViewState extends State<GraphView> {
+class _GraphViewState<N extends NodeBase, E extends EdgeBase<N>>
+    extends State<GraphView<N, E>> {
   final _transformationController = TransformationController();
   var _isLayoutApplied = false;
 
   @override
-  void didUpdateWidget(covariant GraphView oldWidget) {
+  void didUpdateWidget(covariant GraphView<N, E> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.layoutAlgorithm != widget.layoutAlgorithm ||
         oldWidget.canvasSize != widget.canvasSize) {
@@ -105,7 +107,7 @@ class _GraphViewState extends State<GraphView> {
     return InheritedConfiguration(
       controller: widget.controller,
       configuration: GraphViewConfiguration(
-        nodeBuilder: widget.nodeBuilder,
+        nodeBuilder: DefaultNodeBuilder<N>(builder: widget.nodeBuilder),
         edgePainter: widget.edgePainter,
         labelBuilder: widget.labelBuilder,
         layoutAlgorithm: widget.layoutAlgorithm,
@@ -118,7 +120,7 @@ class _GraphViewState extends State<GraphView> {
         builder: (context, viewport) {
           // Build method is not intended to produce any side effects,
           // but viewport-producing code is internal to InteractiveViewer,
-          // so to avoid duplicating it, this little hack is used.
+          // so to avoid duplicating it, this little workaround is used.
           widget.controller._updateViewport(viewport);
           return const GraphLayoutView();
         },

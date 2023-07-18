@@ -11,22 +11,22 @@ class GraphLayoutBuilder {
   });
 
   /// {@nodoc}
-  final Set<Node> nodes;
+  final Set<NodeBase> nodes;
 
   /// {@nodoc}
-  final Set<Edge> edges;
+  final Set<EdgeBase> edges;
 
-  final _positions = <Node, Offset>{};
+  final _positions = <NodeBase, Offset>{};
 
   /// Returns the position of the node.
-  Offset getNodePosition(Node node) => _positions[node]!;
+  Offset getNodePosition(NodeBase node) => _positions[node]!;
 
   /// Sets the position of the node.
-  void setNodePosition(Node node, Offset position) =>
+  void setNodePosition(NodeBase node, Offset position) =>
       _positions[node] = position;
 
   /// Moves the node by the given delta.
-  void translateNode(Node node, Offset delta) {
+  void translateNode(NodeBase node, Offset delta) {
     _positions[node] = _positions[node]! + delta;
   }
 
@@ -47,15 +47,15 @@ class GraphLayoutBuilder {
 class GraphLayout {
   const GraphLayout._(this._nodePositions);
 
-  final Map<Node, Offset> _nodePositions;
+  final Map<NodeBase, Offset> _nodePositions;
 
   /// Returns a node position in layout
-  Offset getPosition(Node node) => getPositionOrNull(node)!;
+  Offset getPosition(NodeBase node) => getPositionOrNull(node)!;
 
   /// Returns a node position in layout if the position exists,
   /// returns null otherwise
-  Offset? getPositionOrNull(Node node) => _nodePositions[node];
+  Offset? getPositionOrNull(NodeBase node) => _nodePositions[node];
 
   /// Checks if position for node exists in the layout
-  bool hasPosition(Node node) => _nodePositions.containsKey(node);
+  bool hasPosition(NodeBase node) => _nodePositions.containsKey(node);
 }

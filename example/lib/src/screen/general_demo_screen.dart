@@ -18,9 +18,9 @@ class GeneralDemoScreen extends StatefulWidget {
 }
 
 class GeneralDemoScreenState extends State<GeneralDemoScreen> {
-  final _controller = GraphController();
+  final _controller = GraphController<Node<User>, Edge<Node<User>>>();
 
-  Set<Node> get _nodes => _controller.nodes;
+  Set<Node<User>> get _nodes => _controller.nodes;
 
   final _random = Random(0);
 
@@ -46,8 +46,8 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
           if (other != node && _random.nextInt(nodeCount + 40 - size) == 0) {
             mutator.addEdge(
               Edge(
-                node,
-                other,
+                source: node,
+                destination: other,
                 data: Colors.black.withOpacity(random.decimal()),
               ),
             );
@@ -66,7 +66,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
       floatingActionButton: ZoomButtons(controller: _controller),
       body: Stack(
         children: [
-          GraphView(
+          GraphView<Node<User>, Edge<Node<User>>>(
             controller: _controller,
             canvasSize: const GraphCanvasSize.proportional(20),
             edgePainter: const _CustomEdgePainter(),
@@ -85,7 +85,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                 _controller.mutate((mutator) {
                   mutator
                     ..addNode(newNode)
-                    ..addEdge(Edge(node, newNode));
+                    ..addEdge(Edge.simple(node, newNode));
                 });
               },
               onLongPressed: () => _controller.mutate(
@@ -93,31 +93,21 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
               ),
               onDoubleTap: () => _controller.jumpToNode(node),
             ),
-            labelBuilder: (context, node) {
-              if (node.size < 50) {
-                return null;
-              }
+            labelBuilder: BottomLabelBuilder(
+              labelExtractor: (context, node) {
+                final user = node.data;
 
-              final user = node.data as User;
-
-              return LabelConfiguration(
-                size: Size.square(node.size * 2),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      '${user.firstName} ${user.lastName}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: node.size / 5,
-                      ),
-                    ),
+                return Text(
+                  '${user.firstName} ${user.lastName}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: node.size / 5,
                   ),
-                ),
-              );
-            },
+                );
+              },
+              labelSize: const Size.square(100),
+            ),
             backgroundBuilder: (context) => const BackgroundGrid(),
             loaderBuilder: (context) => const Center(
               child: CircularProgressIndicator(),
@@ -161,7 +151,7 @@ class _Instructions extends StatelessWidget {
   }
 }
 
-class _CustomEdgePainter implements EdgePainter {
+class _CustomEdgePainter implements EdgePainter<Node<User>, Edge<Node<User>>> {
   const _CustomEdgePainter();
 
   @override

@@ -18,7 +18,7 @@ extension QuadExtension on Quad {
 }
 
 extension RectExtension on Rect {
-  bool containsNode(Node node, Offset position) {
+  bool containsNode(NodeBase node, Offset position) {
     final nodeRect = Rect.fromCircle(
       center: position,
       radius: node.size / 2,
