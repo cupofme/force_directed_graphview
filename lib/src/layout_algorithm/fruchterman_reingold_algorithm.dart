@@ -23,8 +23,8 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
   @override
   Stream<GraphLayout> layout({
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
     required Size size,
   }) {
     return _run(
@@ -38,8 +38,8 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
   @override
   Stream<GraphLayout> relayout({
     required GraphLayout existingLayout,
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
     required Size size,
   }) {
     return _run(
@@ -51,8 +51,8 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
   }
 
   Stream<GraphLayout> _run({
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
     required Size size,
     required GraphLayout? existingLayout,
   }) async* {
@@ -107,8 +107,8 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
   void _runIteration({
     required GraphLayoutBuilder layoutBuilder,
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
     required Size size,
     required double temp,
   }) {

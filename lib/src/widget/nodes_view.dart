@@ -30,7 +30,7 @@ class NodesView extends StatelessWidget {
               LayoutId(
                 id: node,
                 child: RepaintBoundary(
-                  child: configuration.nodeBuilder(context, node),
+                  child: configuration.nodeBuilder.build(context, node),
                 ),
               )
           ],
@@ -46,14 +46,14 @@ class _NodesLayoutDelegate extends MultiChildLayoutDelegate {
     required this.layout,
   });
 
-  final Set<Node> nodes;
+  final Set<NodeBase> nodes;
   final GraphLayout layout;
 
   @override
   void performLayout(Size size) {
     for (final node in nodes) {
       final sizeSquare = Size.square(node.size);
-      layoutChild(node, BoxConstraints.loose(sizeSquare));
+      layoutChild(node, BoxConstraints.tight(sizeSquare));
       positionChild(
         node,
         layout.getPosition(node) - sizeSquare.center(Offset.zero),

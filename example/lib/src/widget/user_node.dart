@@ -12,7 +12,7 @@ class UserNode extends StatefulWidget {
     super.key,
   });
 
-  final Node node;
+  final Node<User> node;
   final VoidCallback? onPressed;
   final VoidCallback? onLongPressed;
   final VoidCallback? onDoubleTap;
@@ -26,7 +26,7 @@ class _UserNodeState extends State<UserNode> {
 
   @override
   Widget build(BuildContext context) {
-    final user = widget.node.data as User;
+    final user = widget.node.data;
     return GestureDetector(
       onTap: () {
         setState(() => _isActive = !_isActive);

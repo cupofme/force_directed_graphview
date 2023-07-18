@@ -26,12 +26,14 @@ class LabelsView extends StatelessWidget {
         final layout = controller.layout;
 
         final nodeToLabel = {
-          for (var node in visibleNodes) node: labelBuilder(context, node),
-        }..removeWhere((key, value) => value == null);
+          for (var node in visibleNodes)
+            node: labelBuilder.build(context, node),
+        };
 
         return CustomMultiChildLayout(
           delegate: _LabelsLayoutDelegate(
-            nodesMap: nodeToLabel.cast(),
+            labels: nodeToLabel,
+            labelBuilder: labelBuilder,
             layout: layout,
           ),
           children: [
@@ -39,7 +41,7 @@ class LabelsView extends StatelessWidget {
               LayoutId(
                 id: entry.key,
                 child: RepaintBoundary(
-                  child: entry.value!.child,
+                  child: entry.value,
                 ),
               )
           ],
@@ -51,26 +53,26 @@ class LabelsView extends StatelessWidget {
 
 class _LabelsLayoutDelegate extends MultiChildLayoutDelegate {
   _LabelsLayoutDelegate({
-    required this.nodesMap,
+    required this.labels,
+    required this.labelBuilder,
     required this.layout,
   });
 
-  final Map<Node, LabelConfiguration> nodesMap;
+  final Map<NodeBase, Widget> labels;
   final GraphLayout layout;
+  final LabelBuilder labelBuilder;
 
   @override
   void performLayout(Size size) {
-    for (final entry in nodesMap.entries) {
+    for (final entry in labels.entries) {
       final node = entry.key;
-      final widthDiff = node.size - entry.value.size.width;
 
-      layoutChild(node, BoxConstraints.loose(entry.value.size));
-
-      positionChild(
+      labelBuilder.performLayout(
+        size,
         node,
-        layout.getPosition(node) +
-            Offset(-node.size / 2, node.size / 2) +
-            Offset(widthDiff / 2, 0),
+        layout.getPosition(node),
+        (constraints) => layoutChild(node, constraints),
+        (offset) => positionChild(node, offset),
       );
     }
   }

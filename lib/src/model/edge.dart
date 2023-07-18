@@ -1,27 +1,54 @@
-import 'package:equatable/equatable.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 import 'package:meta/meta.dart';
 
-/// Model that represents a edge in the graph.
-@immutable
-class Edge with EquatableMixin {
+/// Base class for all edges
+abstract base class EdgeBase<N extends NodeBase> {
   /// {@nodoc}
-  const Edge(
-    this.source,
-    this.destination, {
-    this.data,
+  const EdgeBase({
+    required this.source,
+    required this.destination,
   });
 
   /// Start node of the edge
-  final Node source;
+  final N source;
 
   /// End node of the edge
-  final Node destination;
+  final N destination;
+}
+
+/// Model that represents a edge in the graph.
+@immutable
+final class Edge<N extends NodeBase> extends EdgeBase<N> {
+  /// {@nodoc}
+  const Edge({
+    required super.source,
+    required super.destination,
+    this.data,
+  });
+
+  /// SImple constructor that creates an edge without data
+  const Edge.simple(
+    N source,
+    N destination,
+  ) : this(
+          source: source,
+          destination: destination,
+          data: null,
+        );
 
   /// Value associated with this edge. Intentionally has type Object?
   /// to not overcomplicate the api
   final Object? data;
 
   @override
-  List<Object?> get props => [source, destination, data];
+  int get hashCode => source.hashCode ^ destination.hashCode ^ data.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Edge &&
+          runtimeType == other.runtimeType &&
+          source == other.source &&
+          destination == other.destination &&
+          data == other.data;
 }

@@ -11,8 +11,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  equatable: ^2.0.5
-
   # The following packages are direct dependencies of Flutter, 
   # so we don't need to specify version
   meta: any

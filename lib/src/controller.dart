@@ -1,10 +1,11 @@
 part of 'graph_view.dart';
 
 /// Controller to manipulate the [GraphView].
-class GraphController with ChangeNotifier {
+class GraphController<N extends NodeBase, E extends EdgeBase<N>>
+    with ChangeNotifier {
   static const _effectiveViewportScale = 1.2;
-  final _nodes = <Node>{};
-  final _edges = <Edge>{};
+  final _nodes = <N>{};
+  final _edges = <E>{};
 
   GraphLayout? _layout;
   Size? _currentSize;
@@ -13,10 +14,10 @@ class GraphController with ChangeNotifier {
   TransformationController? _transformationController;
 
   /// {@nodoc}
-  Set<Node> get nodes => Set.unmodifiable(_nodes);
+  Set<N> get nodes => Set.unmodifiable(_nodes);
 
   /// {@nodoc}
-  Set<Edge> get edges => Set.unmodifiable(_edges);
+  Set<E> get edges => Set.unmodifiable(_edges);
 
   /// Returns the current layout. Throws [StateError]
   /// if the graph is not laid out yet.
@@ -32,14 +33,14 @@ class GraphController with ChangeNotifier {
   bool get canLayout => _layout != null && _currentSize != null;
 
   /// Updates the graph using [GraphMutator]
-  void mutate(void Function(GraphMutator mutator) callback) {
-    callback(GraphMutator(this));
+  void mutate(void Function(GraphMutator<N, E> mutator) callback) {
+    callback(GraphMutator<N, E>(this));
     _relayout();
   }
 
   /// Returns s set of nodes that are currently visible on the screen.
   /// Uses 1.2 times the viewport size to determine visibility.
-  Set<Node> getVisibleNodes() {
+  Set<N> getVisibleNodes() {
     final viewport = _effectiveViewport;
     final layout = _layout;
     if (viewport == null || layout == null) {
@@ -58,7 +59,7 @@ class GraphController with ChangeNotifier {
   }
 
   /// Instantly jumps to the given node.
-  void jumpToNode(Node node) {
+  void jumpToNode(N node) {
     final controller = _transformationController;
     final layout = _layout;
     final viewport = _effectiveViewport;
@@ -173,14 +174,14 @@ class GraphController with ChangeNotifier {
     }
   }
 
-  void _addNode(Node node) {
+  void _addNode(N node) {
     if (_hasNode(node)) {
       throw StateError('Node is already in the graph');
     }
     _nodes.add(node);
   }
 
-  void _removeNode(Node node) {
+  void _removeNode(N node) {
     if (!_hasNode(node)) {
       throw StateError('Node $node is not in the graph');
     }
@@ -189,28 +190,28 @@ class GraphController with ChangeNotifier {
     _nodes.remove(node);
   }
 
-  void _addEdge(Edge edge) {
+  void _addEdge(E edge) {
     if (!_hasNode(edge.source) || !_hasNode(edge.destination)) {
       throw StateError('Source or destination node is not in the graph');
     }
     _edges.add(edge);
   }
 
-  void _removeEdge(Edge edge) {
+  void _removeEdge(E edge) {
     if (!_hasEdge(edge)) {
       throw StateError('Edge $edge is not in the graph');
     }
     _edges.remove(edge);
   }
 
-  bool _hasNode(Node node) => _nodes.any((n) => n == node);
+  bool _hasNode(N node) => _nodes.any((n) => n == node);
 
-  bool _hasEdge(Edge edge) => _edges.any((e) => e == edge);
+  bool _hasEdge(E edge) => _edges.any((e) => e == edge);
 }
 
 /// Wrapper around [GraphController] that allows
 /// changing the graph in a batch to avoid unnecessary rebuilds.
-class GraphMutator {
+class GraphMutator<N extends NodeBase, E extends EdgeBase<N>> {
   /// {@nodoc}
   GraphMutator(this.controller);
 
@@ -218,22 +219,22 @@ class GraphMutator {
   final GraphController controller;
 
   /// {@nodoc}
-  void addNode(Node node) {
+  void addNode(N node) {
     controller._addNode(node);
   }
 
   /// {@nodoc}
-  void addEdge(Edge edge) {
+  void addEdge(E edge) {
     controller._addEdge(edge);
   }
 
   /// {@nodoc}
-  void removeNode(Node node) {
+  void removeNode(N node) {
     controller._removeNode(node);
   }
 
   /// {@nodoc}
-  void removeEdge(Edge edge) {
+  void removeEdge(E edge) {
     controller._removeEdge(edge);
   }
 }

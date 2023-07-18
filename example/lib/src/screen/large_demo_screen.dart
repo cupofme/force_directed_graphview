@@ -17,7 +17,7 @@ class LargeDemoScreen extends StatefulWidget {
 }
 
 class LargeDemoScreenState extends State<LargeDemoScreen> {
-  late final _controller = GraphController();
+  final _controller = GraphController<Node<User>, Edge<Node<User>>>();
 
   final _random = Random(0);
 
@@ -44,7 +44,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
         final other = nodes.elementAt(_random.nextInt(_nodeCount));
 
         if (other != node) {
-          mutator.addEdge(Edge(node, other));
+          mutator.addEdge(Edge.simple(node, other));
         }
       }
     });
@@ -57,7 +57,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
         title: const Text('Large Graph Demo ($_nodeCount nodes)'),
       ),
       floatingActionButton: ZoomButtons(controller: _controller),
-      body: GraphView(
+      body: GraphView<Node<User>, Edge<Node<User>>>(
         controller: _controller,
         canvasSize: const GraphCanvasSize.fixed(Size.square(7000)),
         minScale: 0.1,
@@ -76,8 +76,8 @@ class GridLayoutAlgorithm implements GraphLayoutAlgorithm {
 
   @override
   Stream<GraphLayout> layout({
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
     required Size size,
   }) async* {
     final layoutBuilder = GraphLayoutBuilder(
@@ -111,8 +111,8 @@ class GridLayoutAlgorithm implements GraphLayoutAlgorithm {
   @override
   Stream<GraphLayout> relayout({
     required GraphLayout existingLayout,
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
     required Size size,
   }) async* {
     yield* layout(

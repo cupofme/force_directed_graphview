@@ -1,11 +1,13 @@
-export 'src/algorithm/fruchterman_reingold_algorithm.dart';
-export 'src/algorithm/graph_layout_algorithm.dart';
 export 'src/edge_painter/edge_painter.dart';
 export 'src/edge_painter/line_edge_painter.dart';
 export 'src/graph_view.dart';
-export 'src/model/builders.dart';
+export 'src/label_builder/bottom_label_builder.dart';
+export 'src/label_builder/label_builder.dart';
+export 'src/layout_algorithm/fruchterman_reingold_algorithm.dart';
+export 'src/layout_algorithm/graph_layout_algorithm.dart';
 export 'src/model/edge.dart';
 export 'src/model/graph_canvas_size.dart';
 export 'src/model/graph_layout.dart';
-export 'src/model/label_configuration.dart';
 export 'src/model/node.dart';
+export 'src/node_builder/default_node_builder.dart';
+export 'src/node_builder/node_builder.dart';

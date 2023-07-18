@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:force_directed_graphview/src/algorithm/fruchterman_reingold_algorithm.dart';
+import 'package:force_directed_graphview/src/layout_algorithm/fruchterman_reingold_algorithm.dart';
 import 'package:force_directed_graphview/src/model/edge.dart';
 import 'package:force_directed_graphview/src/model/graph_layout.dart';
 import 'package:force_directed_graphview/src/model/node.dart';
@@ -16,8 +16,8 @@ abstract class GraphLayoutAlgorithm {
   /// If iterations are not needed, then this method should yield a single
   /// layout in the end.
   Stream<GraphLayout> layout({
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
     required Size size,
   });
 
@@ -25,8 +25,8 @@ abstract class GraphLayoutAlgorithm {
   /// Can use the existing layout as a starting point.
   Stream<GraphLayout> relayout({
     required GraphLayout existingLayout,
-    required Set<Node> nodes,
-    required Set<Edge> edges,
+    required Set<NodeBase> nodes,
+    required Set<EdgeBase> edges,
     required Size size,
   });
 }
