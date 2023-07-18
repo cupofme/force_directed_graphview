@@ -2,13 +2,18 @@ import 'package:flutter/widgets.dart';
 import 'package:force_directed_graphview/src/label_builder/label_builder.dart';
 import 'package:force_directed_graphview/src/model/node.dart';
 
+/// Label builder that places the label below the node.
 final class BottomLabelBuilder<N extends NodeBase> implements LabelBuilder<N> {
+  /// {@nodoc}
   BottomLabelBuilder({
-    required this.labelExtractor,
+    required this.builder,
     required this.labelSize,
   });
 
-  final Widget Function(BuildContext context, N node) labelExtractor;
+  /// Extracts the label widget from the node.
+  final Widget Function(BuildContext context, N node) builder;
+
+  /// The size of the area available to the label.
   final Size labelSize;
 
   @override
@@ -21,7 +26,7 @@ final class BottomLabelBuilder<N extends NodeBase> implements LabelBuilder<N> {
   ) {
     final widthDelta = node.size - labelSize.width;
 
-    layoutChild(BoxConstraints.loose(labelSize));
+    layoutChild(BoxConstraints.tight(labelSize));
 
     positionChild(
       nodePosition +
@@ -32,6 +37,6 @@ final class BottomLabelBuilder<N extends NodeBase> implements LabelBuilder<N> {
 
   @override
   Widget build(BuildContext context, N node) {
-    return labelExtractor(context, node);
+    return builder(context, node);
   }
 }

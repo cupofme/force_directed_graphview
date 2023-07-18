@@ -94,18 +94,15 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
               onDoubleTap: () => _controller.jumpToNode(node),
             ),
             labelBuilder: BottomLabelBuilder(
-              labelExtractor: (context, node) {
+              builder: (context, node) {
                 final user = node.data;
 
-                return Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    '${user.firstName} ${user.lastName}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: node.size / 5,
-                    ),
+                return Text(
+                  '${user.firstName} ${user.lastName}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: node.size / 5,
                   ),
                 );
               },
