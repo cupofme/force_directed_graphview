@@ -97,12 +97,15 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
               labelExtractor: (context, node) {
                 final user = node.data;
 
-                return Text(
-                  '${user.firstName} ${user.lastName}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: node.size / 5,
+                return Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    '${user.firstName} ${user.lastName}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: node.size / 5,
+                    ),
                   ),
                 );
               },
