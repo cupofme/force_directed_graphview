@@ -12,7 +12,8 @@ class GraphViewConfiguration {
     required this.edgePainter,
     required this.labelBuilder,
     required this.layoutAlgorithm,
-    required this.backgroundBuilder,
+    required this.canvasBackgroundBuilder,
+    required this.builder,
   });
 
   /// {@nodoc}
@@ -25,7 +26,10 @@ class GraphViewConfiguration {
   final LabelBuilder? labelBuilder;
 
   /// {@nodoc}
-  final WidgetBuilder? backgroundBuilder;
+  final WidgetBuilder? canvasBackgroundBuilder;
+
+  /// {@nodoc}
+  final ChildBuilder? builder;
 
   /// {@nodoc}
   final GraphLayoutAlgorithm layoutAlgorithm;

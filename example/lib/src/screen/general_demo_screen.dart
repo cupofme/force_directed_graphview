@@ -108,7 +108,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
               },
               labelSize: const Size.square(100),
             ),
-            backgroundBuilder: (context) => const BackgroundGrid(),
+            canvasBackgroundBuilder: (context) => const BackgroundGrid(),
             loaderBuilder: (context) => const Center(
               child: CircularProgressIndicator(),
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 import 'package:force_directed_graphview/src/configuration.dart';
 import 'package:force_directed_graphview/src/util/extensions.dart';
@@ -8,6 +7,12 @@ import 'package:force_directed_graphview/src/widget/inherited_configuration.dart
 import 'package:vector_math/vector_math_64.dart';
 
 part 'controller.dart';
+
+/// A builder that should be used to wrap a [child] with something.
+typedef ChildBuilder = Widget Function(
+  BuildContext context,
+  Widget child,
+);
 
 /// A widget that displays a graph.
 class GraphView<N extends NodeBase, E extends EdgeBase<N>>
@@ -20,8 +25,9 @@ class GraphView<N extends NodeBase, E extends EdgeBase<N>>
     required this.layoutAlgorithm,
     this.edgePainter = const LineEdgePainter(),
     this.labelBuilder,
-    this.backgroundBuilder,
+    this.canvasBackgroundBuilder,
     this.loaderBuilder,
+    this.builder,
     this.minScale = 0.5,
     this.maxScale = 2,
     super.key,
@@ -38,7 +44,7 @@ class GraphView<N extends NodeBase, E extends EdgeBase<N>>
 
   /// The builder that builds the background of the graph.
   /// If null, the background will be transparent.
-  final WidgetBuilder? backgroundBuilder;
+  final WidgetBuilder? canvasBackgroundBuilder;
 
   /// The builder that builds the loading widget before the first
   /// layout is applied. If null, displays [SizedBox.shrink()]
@@ -52,6 +58,10 @@ class GraphView<N extends NodeBase, E extends EdgeBase<N>>
 
   /// The size of the graph canvas. May exceed the size of the screen.
   final GraphCanvasSize canvasSize;
+
+  /// Allows to add additional widgets right above the canvas,
+  /// but below the [InteractiveViewer]. Similar to [MaterialApp.builder].
+  final ChildBuilder? builder;
 
   /// The minimum scale of the [InteractiveViewer] that wraps the graph.
   final double minScale;
@@ -111,7 +121,8 @@ class _GraphViewState<N extends NodeBase, E extends EdgeBase<N>>
         edgePainter: widget.edgePainter,
         labelBuilder: widget.labelBuilder,
         layoutAlgorithm: widget.layoutAlgorithm,
-        backgroundBuilder: widget.backgroundBuilder,
+        canvasBackgroundBuilder: widget.canvasBackgroundBuilder,
+        builder: widget.builder,
       ),
       child: InteractiveViewer.builder(
         transformationController: _transformationController,
