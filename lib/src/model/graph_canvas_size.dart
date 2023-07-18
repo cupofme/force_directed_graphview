@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:equatable/equatable.dart';
 import 'package:force_directed_graphview/src/model/edge.dart';
 import 'package:force_directed_graphview/src/model/node.dart';
 import 'package:meta/meta.dart';
@@ -29,7 +28,7 @@ sealed class GraphCanvasSize {
 /// The size of the graph canvas is fixed.
 /// {@endtemplate}
 @immutable
-class FixedGraphViewSize with EquatableMixin implements GraphCanvasSize {
+class FixedGraphViewSize implements GraphCanvasSize {
   /// {@nodoc}
   const FixedGraphViewSize(this.size);
 
@@ -45,7 +44,14 @@ class FixedGraphViewSize with EquatableMixin implements GraphCanvasSize {
   }
 
   @override
-  List<Object?> get props => [size];
+  int get hashCode => size.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FixedGraphViewSize &&
+          runtimeType == other.runtimeType &&
+          size == other.size;
 }
 
 /// {@template dynamic_graph_view_size}
@@ -54,7 +60,7 @@ class FixedGraphViewSize with EquatableMixin implements GraphCanvasSize {
 /// the square root of the area.
 /// {@endtemplate}
 @immutable
-class ProportionalGraphViewSize with EquatableMixin implements GraphCanvasSize {
+class ProportionalGraphViewSize implements GraphCanvasSize {
   /// {@macro dynamic_graph_view_size}
   const ProportionalGraphViewSize([this.areaFactor = 10]);
 
@@ -75,5 +81,12 @@ class ProportionalGraphViewSize with EquatableMixin implements GraphCanvasSize {
   }
 
   @override
-  List<Object?> get props => [areaFactor];
+  int get hashCode => areaFactor.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProportionalGraphViewSize &&
+          runtimeType == other.runtimeType &&
+          areaFactor == other.areaFactor;
 }

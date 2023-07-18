@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 import 'package:meta/meta.dart';
 
@@ -19,7 +18,7 @@ abstract base class EdgeBase<N extends NodeBase> {
 
 /// Model that represents a edge in the graph.
 @immutable
-final class Edge<N extends NodeBase> extends EdgeBase<N> with EquatableMixin {
+final class Edge<N extends NodeBase> extends EdgeBase<N> {
   /// {@nodoc}
   const Edge({
     required super.source,
@@ -42,5 +41,14 @@ final class Edge<N extends NodeBase> extends EdgeBase<N> with EquatableMixin {
   final Object? data;
 
   @override
-  List<Object?> get props => [source, destination, data];
+  int get hashCode => source.hashCode ^ destination.hashCode ^ data.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Edge &&
+          runtimeType == other.runtimeType &&
+          source == other.source &&
+          destination == other.destination &&
+          data == other.data;
 }

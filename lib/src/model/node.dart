@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 /// Base class for all nodes
@@ -16,7 +15,7 @@ abstract base class NodeBase {
 
 /// Default implementation of [NodeBase]
 @immutable
-final class Node<T> extends NodeBase with EquatableMixin {
+final class Node<T> extends NodeBase {
   /// {@nodoc}
   const Node({
     required this.data,
@@ -29,5 +28,10 @@ final class Node<T> extends NodeBase with EquatableMixin {
   final T data;
 
   @override
-  List<Object?> get props => [data];
+  int get hashCode => data.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Node && runtimeType == other.runtimeType && data == other.data;
 }
