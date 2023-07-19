@@ -38,6 +38,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
         final node = Node(
           data: user,
           size: size.toDouble(),
+          pinned: _random.nextInt(nodeCount ~/ 3) == 0,
         );
 
         mutator.addNode(node);
@@ -70,9 +71,20 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
             controller: _controller,
             canvasSize: const GraphCanvasSize.proportional(20),
             edgePainter: const _CustomEdgePainter(),
-            layoutAlgorithm: const FruchtermanReingoldAlgorithm(
+            layoutAlgorithm: FruchtermanReingoldAlgorithm(
               iterations: 500,
               showIterations: true,
+              initialPositionExtractor: (node, canvasSize) {
+                if (node.pinned) {
+                  return Offset(
+                    _random.nextDouble() * canvasSize.width,
+                    _random.nextDouble() * canvasSize.height,
+                  );
+                }
+
+                return FruchtermanReingoldAlgorithm
+                    .defaultInitialPositionExtractor(node, canvasSize);
+              },
             ),
             nodeBuilder: (context, node) => UserNode(
               node: node,

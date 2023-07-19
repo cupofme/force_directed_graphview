@@ -3,6 +3,12 @@ import 'dart:ui';
 
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 
+/// A function that extracts the initial position of the node
+typedef InitialNodePositionExtractor = Offset Function(
+  NodeBase node,
+  Size canvasSize,
+);
+
 /// An implementation of Fruchterman-Reingold algorithm
 class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
   /// Creates a new instance of [FruchtermanReingoldAlgorithm]
@@ -10,6 +16,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     this.iterations = 100,
     this.relayoutIterationsMultiplier = 0.1,
     this.showIterations = false,
+    this.initialPositionExtractor = defaultInitialPositionExtractor,
   });
 
   /// The number of iterations to run the algorithm
@@ -20,6 +27,9 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
   /// If true, the algorithm will emit intermediate layouts as it runs
   final bool showIterations;
+
+  /// The function that extracts the initial position of the node
+  final InitialNodePositionExtractor initialPositionExtractor;
 
   @override
   Stream<GraphLayout> layout({
@@ -57,7 +67,6 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     required GraphLayout? existingLayout,
   }) async* {
     var temp = sqrt(size.width / 2 * size.height / 2) / 20;
-    final random = Random(0);
 
     final layoutBuilder = GraphLayoutBuilder(
       nodes: nodes,
@@ -68,7 +77,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
       layoutBuilder.setNodePosition(
         node,
         existingLayout?.getPositionOrNull(node) ??
-            _randomPosition(random, size),
+            initialPositionExtractor(node, size),
       );
     }
 
@@ -155,6 +164,8 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     for (final v in nodes) {
       final displacement = displacements[v]!;
 
+      if (v.pinned) continue;
+
       layoutBuilder.translateNode(
         v,
         (displacement / displacement.distance) *
@@ -163,22 +174,23 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     }
 
     // Prevent nodes from overlapping
-    for (final v in nodes) {
-      for (final u in nodes) {
-        if (identical(v, u)) continue;
+    // for (final v in nodes) {
+    //   for (final u in nodes) {
+    //     if (identical(v, u)) continue;
 
-        final delta =
-            layoutBuilder.getNodePosition(v) - layoutBuilder.getNodePosition(u);
-        final distance = delta.distance;
+    //     final delta =
+    //         layoutBuilder.getNodePosition(v) -
+    //          layoutBuilder.getNodePosition(u);
+    //     final distance = delta.distance;
 
-        if (distance < v.size / 2 + u.size / 2) {
-          layoutBuilder.translateNode(
-            v,
-            (delta / distance) * (distance - v.size / 2 - u.size / 2),
-          );
-        }
-      }
-    }
+    //     if (distance < v.size / 2 + u.size / 2) {
+    //       layoutBuilder.translateNode(
+    //         v,
+    //         (delta / distance) * (distance - v.size / 2 - u.size / 2),
+    //       );
+    //     }
+    //   }
+    // }
 
     // Prevent nodes from escaping the canvas
     for (final v in nodes) {
@@ -194,10 +206,17 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     }
   }
 
-  Offset _randomPosition(Random random, Size size) {
+  /// The default implementation of [initialPositionExtractor]
+  static Offset defaultInitialPositionExtractor(
+    NodeBase node,
+    Size canvasSize,
+  ) {
+    final random = Random(node.hashCode);
+
+    // Just a small initial offset is enough
     return Offset(
-      random.nextDouble() + size.width / 2,
-      random.nextDouble() + size.height / 2,
+      random.nextDouble() + canvasSize.width / 2,
+      random.nextDouble() + canvasSize.height / 2,
     );
   }
 }
