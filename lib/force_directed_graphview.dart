@@ -8,6 +8,7 @@ export 'src/layout_algorithm/graph_layout_algorithm.dart';
 export 'src/model/edge.dart';
 export 'src/model/graph_canvas_size.dart';
 export 'src/model/graph_layout.dart';
+export 'src/model/lazy_building.dart';
 export 'src/model/node.dart';
 export 'src/node_builder/default_node_builder.dart';
 export 'src/node_builder/node_builder.dart';

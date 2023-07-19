@@ -23,6 +23,7 @@ class GraphView<N extends NodeBase, E extends EdgeBase<N>>
     required this.controller,
     required this.canvasSize,
     required this.layoutAlgorithm,
+    this.lazyBuilding = const LazyBuilding.none(),
     this.edgePainter = const LineEdgePainter(),
     this.labelBuilder,
     this.canvasBackgroundBuilder,
@@ -59,6 +60,9 @@ class GraphView<N extends NodeBase, E extends EdgeBase<N>>
   /// The size of the graph canvas. May exceed the size of the screen.
   final GraphCanvasSize canvasSize;
 
+  /// The strategy that is used to lazily render the graph.
+  final LazyBuilding lazyBuilding;
+
   /// Allows to add additional widgets right above the canvas,
   /// but below the [InteractiveViewer]. Similar to [MaterialApp.builder].
   final ChildBuilder? builder;
@@ -82,16 +86,18 @@ class _GraphViewState<N extends NodeBase, E extends EdgeBase<N>>
   void didUpdateWidget(covariant GraphView<N, E> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.layoutAlgorithm != widget.layoutAlgorithm ||
-        oldWidget.canvasSize != widget.canvasSize) {
-      widget.controller._applyLayout(widget.layoutAlgorithm, widget.canvasSize);
+        oldWidget.canvasSize != widget.canvasSize ||
+        oldWidget.lazyBuilding != widget.lazyBuilding) {
+      _initController(
+        shouldLayout: oldWidget.layoutAlgorithm != widget.layoutAlgorithm,
+      );
     }
   }
 
   @override
   void initState() {
     super.initState();
-    widget.controller._applyLayout(widget.layoutAlgorithm, widget.canvasSize);
-    widget.controller._setTransformationController(_transformationController);
+    _initController(shouldLayout: true);
     widget.controller.addListener(_onControllerChanged);
   }
 
@@ -99,6 +105,18 @@ class _GraphViewState<N extends NodeBase, E extends EdgeBase<N>>
   void dispose() {
     widget.controller.removeListener(_onControllerChanged);
     super.dispose();
+  }
+
+  void _initController({
+    required bool shouldLayout,
+  }) {
+    widget.controller._applyConfiguration(
+      algorithm: widget.layoutAlgorithm,
+      size: widget.canvasSize,
+      lazyBuilding: widget.lazyBuilding,
+      transformationController: _transformationController,
+      shouldLayout: shouldLayout,
+    );
   }
 
   void _onControllerChanged() {

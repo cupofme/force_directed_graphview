@@ -3,14 +3,16 @@ part of 'graph_view.dart';
 /// Controller to manipulate the [GraphView].
 class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     with ChangeNotifier {
-  static const _effectiveViewportScale = 1.2;
   final _nodes = <N>{};
   final _edges = <E>{};
 
   GraphLayout? _layout;
   Size? _currentSize;
+  // Region of canvas that is building its nodes now
   Rect? _effectiveViewport;
+  Rect? _actualViewport;
   GraphLayoutAlgorithm? _currentAlgorithm;
+  LazyBuilding? _lazyBuilding;
   TransformationController? _transformationController;
 
   /// {@nodoc}
@@ -43,9 +45,8 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   Set<N> getVisibleNodes() {
     final viewport = _effectiveViewport;
     final layout = _layout;
-    if (viewport == null || layout == null) {
-      return {};
-    }
+    if (viewport == null || layout == null) return {};
+    if (viewport == Rect.largest) return nodes;
 
     return _nodes.where(
       (node) {
@@ -58,24 +59,33 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     ).toSet();
   }
 
-  /// Instantly jumps to the given node.
+  /// Instantly jumps to the given node placing it in the center of the screen.
   void jumpToNode(N node) {
+    if (!_hasNode(node)) {
+      throw ArgumentError.value(node, 'node', 'Node is not in the graph');
+    }
+
     final controller = _transformationController;
     final layout = _layout;
-    final viewport = _effectiveViewport;
+    final viewport = _actualViewport;
     if (controller == null || layout == null || viewport == null) {
       return;
     }
 
     final position = layout.getPosition(node);
-    final matrix = controller.value.clone();
-    final center = viewport.scale(1 / _effectiveViewportScale).center;
+    final oldMatrix = controller.value.clone();
+    final matrixScale = oldMatrix.getMaxScaleOnAxis();
+    final matrixOffset =
+        -Offset(oldMatrix.storage[12], oldMatrix.storage[13]) / matrixScale;
+    final center = viewport.center;
 
-    matrix
-      ..translate(center.dx, center.dy)
-      ..translate(-position.dx, -position.dy);
-
-    controller.value = matrix;
+    controller.value = Matrix4.identity()
+      ..scale(matrixScale)
+      ..translate(-position.dx, -position.dy)
+      ..translate(
+        (center.dx - matrixOffset.dx),
+        (center.dy - matrixOffset.dy),
+      );
   }
 
   /// Instantly zoom in by a given factor.
@@ -87,33 +97,22 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   /// Instantly zooms by a given factor.
   void zoomBy(double factor) {
     if (factor <= 0) {
-      throw ArgumentError.value(
-        factor,
-        'factor',
-        'Factor must be greater than 0',
-      );
+      throw ArgumentError.value(factor, 'factor', 'Factor must be > 0');
     }
 
     final controller = _transformationController;
-    final viewport = _effectiveViewport;
+    final viewport = _actualViewport;
     if (controller == null || viewport == null) {
       return;
     }
 
-    final matrix = controller.value.clone();
-    final center = viewport.scale(1 / _effectiveViewportScale).center;
+    final oldMatrix = controller.value.clone();
+    final center = viewport.center;
 
-    matrix
+    controller.value = oldMatrix
       ..translate(center.dx, center.dy)
       ..scale(factor)
       ..translate(-center.dx, -center.dy);
-
-    controller.value = matrix;
-  }
-
-  // ignore: use_setters_to_change_properties
-  void _setTransformationController(TransformationController controller) {
-    _transformationController = controller;
   }
 
   Future<void> _relayout() async {
@@ -137,15 +136,22 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     }
   }
 
-  Future<void> _applyLayout(
-    GraphLayoutAlgorithm algorithm,
-    GraphCanvasSize size,
-  ) async {
+  Future<void> _applyConfiguration({
+    required GraphLayoutAlgorithm algorithm,
+    required GraphCanvasSize size,
+    required LazyBuilding lazyBuilding,
+    required TransformationController transformationController,
+    required bool shouldLayout,
+  }) async {
+    _lazyBuilding = lazyBuilding;
+    _transformationController = transformationController;
     _currentAlgorithm = algorithm;
     _currentSize = size.resolve(
       nodes: _nodes,
       edges: _edges,
     );
+
+    if (!shouldLayout) return;
 
     final layoutStream = algorithm.layout(
       nodes: _nodes,
@@ -160,8 +166,12 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   }
 
   void _updateViewport(Quad viewport) {
-    final actualViewport = viewport.toRect();
-    final newEffectiveViewport = actualViewport.scale(_effectiveViewportScale);
+    _actualViewport = viewport.toRect();
+    final actualViewport = _actualViewport = viewport.toRect();
+    final newEffectiveViewport = switch (_lazyBuilding) {
+      LazyBuildingViewport(scale: final scale) => actualViewport.scale(scale),
+      LazyBuildingNone() || null => Rect.largest,
+    };
 
     // If the new viewport is contained in the current effective viewport,
     // then skip the update to avoid unnecessary rebuilds
@@ -204,9 +214,9 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     _edges.remove(edge);
   }
 
-  bool _hasNode(N node) => _nodes.any((n) => n == node);
+  bool _hasNode(N node) => _nodes.contains(node);
 
-  bool _hasEdge(E edge) => _edges.any((e) => e == edge);
+  bool _hasEdge(E edge) => _edges.contains(edge);
 }
 
 /// Wrapper around [GraphController] that allows
