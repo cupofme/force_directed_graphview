@@ -11,11 +11,11 @@ import 'package:meta/meta.dart';
 @immutable
 sealed class GraphCanvasSize {
   /// {@macro fixed_graph_view_size}
-  const factory GraphCanvasSize.fixed(Size size) = FixedGraphViewSize;
+  const factory GraphCanvasSize.fixed(Size size) = GraphCanvasSizeFixed;
 
   /// {@macro dynamic_graph_view_size}
   const factory GraphCanvasSize.proportional([double areaFactor]) =
-      ProportionalGraphViewSize;
+      GraphCanvasSizeProportional;
 
   /// Resolves the size of the graph canvas.
   Size resolve({
@@ -28,9 +28,9 @@ sealed class GraphCanvasSize {
 /// The size of the graph canvas is fixed.
 /// {@endtemplate}
 @immutable
-class FixedGraphViewSize implements GraphCanvasSize {
+final class GraphCanvasSizeFixed implements GraphCanvasSize {
   /// {@nodoc}
-  const FixedGraphViewSize(this.size);
+  const GraphCanvasSizeFixed(this.size);
 
   /// The fixed size of the graph canvas.
   final Size size;
@@ -49,7 +49,7 @@ class FixedGraphViewSize implements GraphCanvasSize {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FixedGraphViewSize &&
+      other is GraphCanvasSizeFixed &&
           runtimeType == other.runtimeType &&
           size == other.size;
 }
@@ -60,9 +60,9 @@ class FixedGraphViewSize implements GraphCanvasSize {
 /// the square root of the area.
 /// {@endtemplate}
 @immutable
-class ProportionalGraphViewSize implements GraphCanvasSize {
+final class GraphCanvasSizeProportional implements GraphCanvasSize {
   /// {@macro dynamic_graph_view_size}
-  const ProportionalGraphViewSize([this.areaFactor = 10]);
+  const GraphCanvasSizeProportional([this.areaFactor = 10]);
 
   /// The factor that is used to calculate the size of the graph canvas.
   final double areaFactor;
@@ -86,7 +86,7 @@ class ProportionalGraphViewSize implements GraphCanvasSize {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProportionalGraphViewSize &&
+      other is GraphCanvasSizeProportional &&
           runtimeType == other.runtimeType &&
           areaFactor == other.areaFactor;
 }

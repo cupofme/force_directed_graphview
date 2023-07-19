@@ -60,6 +60,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
       body: GraphView<Node<User>, Edge<Node<User>>>(
         controller: _controller,
         canvasSize: const GraphCanvasSize.fixed(Size.square(7000)),
+        lazyBuilding: const LazyBuilding.viewport(1.2),
         minScale: 0.1,
         maxScale: 10,
         layoutAlgorithm: const GridLayoutAlgorithm(),
