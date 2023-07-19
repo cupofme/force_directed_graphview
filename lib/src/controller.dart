@@ -141,7 +141,6 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     required GraphCanvasSize size,
     required LazyBuilding lazyBuilding,
     required TransformationController transformationController,
-    required bool shouldLayout,
   }) async {
     _lazyBuilding = lazyBuilding;
     _transformationController = transformationController;
@@ -150,8 +149,6 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
       nodes: _nodes,
       edges: _edges,
     );
-
-    if (!shouldLayout) return;
 
     final layoutStream = algorithm.layout(
       nodes: _nodes,

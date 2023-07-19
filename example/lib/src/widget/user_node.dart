@@ -3,7 +3,7 @@ import 'package:example/src/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 
-class UserNode extends StatefulWidget {
+class UserNode extends StatelessWidget {
   const UserNode({
     required this.node,
     this.onPressed,
@@ -18,40 +18,38 @@ class UserNode extends StatefulWidget {
   final VoidCallback? onDoubleTap;
 
   @override
-  State<UserNode> createState() => _UserNodeState();
-}
-
-class _UserNodeState extends State<UserNode> {
-  var _isActive = false;
-
-  @override
   Widget build(BuildContext context) {
-    final user = widget.node.data;
+    final user = node.data;
     return GestureDetector(
       onTap: () {
-        setState(() => _isActive = !_isActive);
-        widget.onPressed?.call();
+        onPressed?.call();
       },
-      onLongPress: widget.onLongPressed,
-      onDoubleTap: widget.onDoubleTap,
+      onLongPress: onLongPressed,
+      onDoubleTap: onDoubleTap,
       child: SizedBox(
-        width: widget.node.size,
-        height: widget.node.size,
+        width: node.size,
+        height: node.size,
         child: DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.grey,
             border: Border.all(
-              color: _isActive ? Colors.red : Colors.black,
+              color: node.pinned ? Colors.red : Colors.black,
               width: 2,
             ),
             image: DecorationImage(
               fit: BoxFit.cover,
               image: CachedNetworkImageProvider(
-                'https://picsum.photos/seed/${user.id}/${widget.node.size.toInt()}',
+                'https://picsum.photos/seed/${user.id}/${node.size.toInt()}',
               ),
             ),
           ),
+          child: node.pinned
+              ? const Icon(
+                  Icons.push_pin,
+                  color: Colors.red,
+                )
+              : null,
         ),
       ),
     );

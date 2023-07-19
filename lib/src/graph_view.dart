@@ -83,21 +83,9 @@ class _GraphViewState<N extends NodeBase, E extends EdgeBase<N>>
   var _isLayoutApplied = false;
 
   @override
-  void didUpdateWidget(covariant GraphView<N, E> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.layoutAlgorithm != widget.layoutAlgorithm ||
-        oldWidget.canvasSize != widget.canvasSize ||
-        oldWidget.lazyBuilding != widget.lazyBuilding) {
-      _initController(
-        shouldLayout: oldWidget.layoutAlgorithm != widget.layoutAlgorithm,
-      );
-    }
-  }
-
-  @override
   void initState() {
     super.initState();
-    _initController(shouldLayout: true);
+    _initController();
     widget.controller.addListener(_onControllerChanged);
   }
 
@@ -107,15 +95,12 @@ class _GraphViewState<N extends NodeBase, E extends EdgeBase<N>>
     super.dispose();
   }
 
-  void _initController({
-    required bool shouldLayout,
-  }) {
+  void _initController() {
     widget.controller._applyConfiguration(
       algorithm: widget.layoutAlgorithm,
       size: widget.canvasSize,
       lazyBuilding: widget.lazyBuilding,
       transformationController: _transformationController,
-      shouldLayout: shouldLayout,
     );
   }
 
