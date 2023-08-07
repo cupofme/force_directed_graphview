@@ -16,3 +16,8 @@ jobs:
       - run: dart format --set-exit-if-changed .
       - run: flutter analyze .
       - run: flutter test
+      - run: flutter build web --release --web-renderer canvaskit
+        working-directory: example
+      - run: dart pub global activate pana
+      - run: dart pub global run pana --exit-code-threshold 130 .
+
