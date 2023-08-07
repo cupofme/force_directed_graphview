@@ -1,4 +1,4 @@
-# Force-directed GraphView
+# force_directed_graphview
 
 [![CI](https://github.com/cupofme/force_directed_graphview/actions/workflows/ci.yaml/badge.svg)](https://github.com/cupofme/force_directed_graphview/actions/workflows/ci.yaml)
 [![Deploy to Github Pages](https://github.com/cupofme/force_directed_graphview/actions/workflows/deploy.yaml/badge.svg?branch=main)](https://github.com/cupofme/force_directed_graphview/actions/workflows/deploy.yaml)
@@ -9,10 +9,14 @@
 
 ## Overview
 
-This library is mostly designed to display graphs using force-directed layouts, but it can be used for other purposes as well with the implementation of a custom layout algorithm. Currently nodes can't be dragged. The entire graph can be dragged and zoomed using underlying [InteractiveViewer](https://api.flutter.dev/flutter/widgets/InteractiveViewer-class.html) widget.
+A highly customizable library for displaying force-directed graphs in Flutter.
 
-**🛑 The library is still in the development and not ready for production use. The API is not stable and can change at any time 🛑.**
+This library is primarily designed to display graphs using force-directed layouts, but it can be used for other purposes as well with the implementation of a custom layout algorithm. Currently nodes can't be dragged by gestures. The entire canvas can be dragged and zoomed using underlying [InteractiveViewer](https://api.flutter.dev/flutter/widgets/InteractiveViewer-class.html) widget.
 
 ## Usage
 
 For example usage see [Example](https://github.com/cupofme/force_directed_graphview/blob/main/example/lib/src/screens/general_demo_screen.dart)
+
+## License
+
+[MIT](https://opensource.org/license/mit/)
