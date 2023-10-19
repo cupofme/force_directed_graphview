@@ -15,7 +15,7 @@ This library is primarily designed to display graphs using force-directed layout
 
 ## Usage
 
-For example usage see [Example](https://github.com/cupofme/force_directed_graphview/blob/main/example/lib/src/screens/general_demo_screen.dart)
+For example usage see [Example](https://github.com/cupofme/force_directed_graphview/blob/main/example/lib/src/screen/general_demo_screen.dart)
 
 ## License
 
