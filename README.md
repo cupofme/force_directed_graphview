@@ -17,6 +17,10 @@ This library is primarily designed to display graphs using force-directed layout
 
 For example usage see [Example](https://github.com/cupofme/force_directed_graphview/blob/main/example/lib/src/screen/general_demo_screen.dart)
 
+## Fruchterman-Reingold Algorithm scaling
+
+Fruchterman-Reingold's got a time complexity of `O(N^2 + E)` per loop where `N` is the number of nodes and `E` is the number of edges. Simply put, it can get slow pretty fast if you have a large graph.
+
 ## License
 
 [MIT](https://opensource.org/license/mit/)

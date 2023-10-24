@@ -28,8 +28,6 @@ final class Node<T> extends NodeBase {
   });
 
   /// The data associated with this node, should be unique.
-  /// The [Object] type is used instead of generic to allow more widget to be
-  /// constant and thus prevent unnecessary rebuilds.
   final T data;
 
   @override
