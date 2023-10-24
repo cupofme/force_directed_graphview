@@ -128,8 +128,9 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   Future<void> _relayout() async {
     final currentAlgorithm = _currentAlgorithm;
     final currentSize = _currentSize;
+    final layout = _layout;
 
-    if (currentAlgorithm == null || currentSize == null) {
+    if (currentAlgorithm == null || currentSize == null || layout == null) {
       return;
     }
 
@@ -258,6 +259,14 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     notifyListeners();
   }
 
+  /// {@nodoc}
+  void clear() {
+    _nodes.clear();
+    _edges.clear();
+    _layout = const GraphLayout.empty();
+    notifyListeners();
+  }
+
   bool _hasNode(N node) => _nodes.contains(node);
 
   bool _hasEdge(E edge) => _edges.contains(edge);
@@ -290,5 +299,10 @@ class GraphMutator<N extends NodeBase, E extends EdgeBase<N>> {
   /// {@nodoc}
   void removeEdge(E edge) {
     controller._removeEdge(edge);
+  }
+
+  /// {@nodoc}
+  void clear() {
+    controller.clear();
   }
 }

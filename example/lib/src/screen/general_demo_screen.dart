@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:context_menus/context_menus.dart';
 import 'package:example/src/model/user.dart';
 import 'package:example/src/widget/background_grid.dart';
+import 'package:example/src/widget/control_buttons.dart';
 import 'package:example/src/widget/user_node.dart';
-import 'package:example/src/widget/zoom_buttons.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
@@ -65,7 +65,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
       appBar: AppBar(
         title: const Text('General Graph Demo'),
       ),
-      floatingActionButton: ZoomButtons(controller: _controller),
+      floatingActionButton: ControlButtons(controller: _controller),
       body: Stack(
         children: [
           GraphView<Node<User>, Edge<Node<User>>>(

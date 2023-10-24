@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:example/src/model/user.dart';
 import 'package:example/src/widget/background_grid.dart';
+import 'package:example/src/widget/control_buttons.dart';
 import 'package:example/src/widget/user_node.dart';
-import 'package:example/src/widget/zoom_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 
@@ -56,7 +56,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
       appBar: AppBar(
         title: const Text('Large Graph Demo ($_nodeCount nodes)'),
       ),
-      floatingActionButton: ZoomButtons(controller: _controller),
+      floatingActionButton: ControlButtons(controller: _controller),
       body: GraphView<Node<User>, Edge<Node<User>>>(
         controller: _controller,
         canvasSize: const GraphCanvasSize.fixed(Size.square(7000)),

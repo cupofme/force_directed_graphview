@@ -59,6 +59,9 @@ class GraphLayoutBuilder {
 class GraphLayout {
   const GraphLayout._(this._nodePositions);
 
+  /// {@nodoc}
+  const GraphLayout.empty() : _nodePositions = const {};
+
   final Map<NodeBase, Offset> _nodePositions;
 
   /// Returns a node position in layout
