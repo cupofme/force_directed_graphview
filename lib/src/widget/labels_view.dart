@@ -26,7 +26,7 @@ class LabelsView extends StatelessWidget {
         final layout = controller.layout;
 
         final nodeToLabel = {
-          for (var node in visibleNodes)
+          for (final node in visibleNodes)
             node: labelBuilder.build(context, node),
         };
 
@@ -37,13 +37,13 @@ class LabelsView extends StatelessWidget {
             layout: layout,
           ),
           children: [
-            for (var entry in nodeToLabel.entries)
+            for (final entry in nodeToLabel.entries)
               LayoutId(
                 id: entry.key,
                 child: RepaintBoundary(
                   child: entry.value,
                 ),
-              )
+              ),
           ],
         );
       },

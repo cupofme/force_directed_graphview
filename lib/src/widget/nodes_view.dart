@@ -26,13 +26,13 @@ class NodesView extends StatelessWidget {
             layout: layout,
           ),
           children: [
-            for (var node in visibleNodes)
+            for (final node in visibleNodes)
               LayoutId(
                 id: node,
                 child: RepaintBoundary(
                   child: configuration.nodeBuilder.build(context, node),
                 ),
-              )
+              ),
           ],
         );
       },

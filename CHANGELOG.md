@@ -1,6 +1,7 @@
 ## unreleased
 
 - Update README.md
+- Make example more usable
 
 ## 0.1.1
 

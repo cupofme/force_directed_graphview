@@ -12,6 +12,7 @@ dependencies:
 
   faker: ^2.1.0
   cached_network_image: ^3.2.3
+  context_menus: ^1.0.2
   force_directed_graphview: 
     path: ../
 

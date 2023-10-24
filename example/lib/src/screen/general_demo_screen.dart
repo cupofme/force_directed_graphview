@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:context_menus/context_menus.dart';
 import 'package:example/src/model/user.dart';
 import 'package:example/src/widget/background_grid.dart';
 import 'package:example/src/widget/user_node.dart';
@@ -86,24 +87,9 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
                     .defaultInitialPositionExtractor(node, canvasSize);
               },
             ),
-            nodeBuilder: (context, node) => UserNode(
+            nodeBuilder: (context, node) => _NodeView(
+              controller: _controller,
               node: node,
-              onPressed: () {
-                final newNode = Node(
-                  data: User.generate(),
-                  size: node.size,
-                );
-
-                _controller.mutate((mutator) {
-                  mutator
-                    ..addNode(newNode)
-                    ..addEdge(Edge.simple(node, newNode));
-                });
-              },
-              onLongPressed: () => _controller.mutate(
-                (mutator) => mutator.removeNode(node),
-              ),
-              onDoubleTap: () => _controller.jumpToNode(node),
             ),
             labelBuilder: BottomLabelBuilder(
               builder: (context, node) {
@@ -132,6 +118,57 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
   }
 }
 
+class _NodeView extends StatelessWidget {
+  const _NodeView({
+    required this.controller,
+    required this.node,
+  });
+
+  final GraphController<Node<User>, Edge<Node<User>>> controller;
+  final Node<User> node;
+
+  @override
+  Widget build(BuildContext context) {
+    return ContextMenuRegion(
+      contextMenu: GenericContextMenu(
+        buttonConfigs: [
+          ContextMenuButtonConfig(
+            'Add node',
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              final newNode = Node(
+                data: User.generate(),
+                size: node.size,
+              );
+
+              controller.mutate((mutator) {
+                mutator
+                  ..addNode(newNode)
+                  ..addEdge(Edge.simple(node, newNode));
+              });
+            },
+          ),
+          ContextMenuButtonConfig(
+            'Jump To',
+            icon: const Icon(Icons.circle_outlined),
+            onPressed: () => controller.jumpToNode(node),
+          ),
+          ContextMenuButtonConfig(
+            'Delete',
+            icon: const Icon(Icons.delete_outline),
+            onPressed: () {
+              controller.mutate(
+                (mutator) => mutator.removeNode(node),
+              );
+            },
+          ),
+        ],
+      ),
+      child: UserNode(node: node),
+    );
+  }
+}
+
 class _Instructions extends StatelessWidget {
   const _Instructions();
 
@@ -142,21 +179,14 @@ class _Instructions extends StatelessWidget {
       left: 8,
       child: DefaultTextStyle(
         style: const TextStyle(
-          fontSize: 20,
+          fontSize: 16,
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         child: Container(
           padding: const EdgeInsets.all(8),
           color: Colors.white,
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Tap to add a node'),
-              Text('Long press to delete a node'),
-              Text('Double tap to focus on node')
-            ],
-          ),
+          child: const Text('Long press on node\nto open context menu'),
         ),
       ),
     );
