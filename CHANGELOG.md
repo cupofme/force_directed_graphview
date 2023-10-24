@@ -1,4 +1,4 @@
-## unreleased
+## 0.2.0
 
 - Update README.md
 - Make example more usable
