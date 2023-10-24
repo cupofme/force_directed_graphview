@@ -70,7 +70,6 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
     final layoutBuilder = GraphLayoutBuilder(
       nodes: nodes,
-      edges: edges,
     );
 
     for (final node in nodes) {

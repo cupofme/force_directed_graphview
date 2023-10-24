@@ -83,7 +83,6 @@ class GridLayoutAlgorithm implements GraphLayoutAlgorithm {
   }) async* {
     final layoutBuilder = GraphLayoutBuilder(
       nodes: nodes,
-      edges: edges,
     );
 
     final nodeCount = nodes.length;

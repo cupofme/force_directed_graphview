@@ -15,6 +15,9 @@ abstract base class NodeBase {
 
   /// Specifies whether the node is pinned to its position.
   final bool pinned;
+
+  /// Copies the node with the given pinned value.
+  NodeBase copyWithPinned(bool pinned);
 }
 
 /// Default implementation of [NodeBase]
@@ -37,4 +40,19 @@ final class Node<T> extends NodeBase {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Node && runtimeType == other.runtimeType && data == other.data;
+
+  @override
+  NodeBase copyWithPinned(bool pinned) => copyWith(pinned: pinned);
+
+  /// {@nodoc}
+  Node<T> copyWith({
+    double? size,
+    bool? pinned,
+  }) {
+    return Node<T>(
+      data: data,
+      size: size ?? this.size,
+      pinned: pinned ?? this.pinned,
+    );
+  }
 }

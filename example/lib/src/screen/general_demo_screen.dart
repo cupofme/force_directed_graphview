@@ -149,6 +149,24 @@ class _NodeView extends StatelessWidget {
             },
           ),
           ContextMenuButtonConfig(
+            'Pin/Unpin',
+            icon: const Icon(Icons.pin_drop_outlined),
+            onPressed: () {
+              controller.setPinned(node, !node.pinned);
+            },
+          ),
+          ContextMenuButtonConfig(
+            'Replace node',
+            icon: const Icon(Icons.replay_outlined),
+            onPressed: () => controller.replaceNode(
+              node,
+              Node(
+                data: User.generate(),
+                size: node.size * 1.2,
+              ),
+            ),
+          ),
+          ContextMenuButtonConfig(
             'Jump To',
             icon: const Icon(Icons.circle_outlined),
             onPressed: () => controller.jumpToNode(node),

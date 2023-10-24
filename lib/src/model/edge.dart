@@ -14,6 +14,12 @@ abstract base class EdgeBase<N extends NodeBase> {
 
   /// End node of the edge
   final N destination;
+
+  /// Copies the edge with the given nodes.
+  EdgeBase<N> replaceNode({
+    N? source,
+    N? destination,
+  });
 }
 
 /// Model that represents a edge in the graph.
@@ -51,4 +57,16 @@ final class Edge<N extends NodeBase> extends EdgeBase<N> {
           source == other.source &&
           destination == other.destination &&
           data == other.data;
+
+  @override
+  Edge<N> replaceNode({
+    N? source,
+    N? destination,
+  }) {
+    return Edge<N>(
+      data: data,
+      source: source ?? this.source,
+      destination: destination ?? this.destination,
+    );
+  }
 }

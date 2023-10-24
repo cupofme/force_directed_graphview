@@ -34,7 +34,7 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   /// Checks whether the graph is laid out and the size is available.
   bool get canLayout => _layout != null && _currentSize != null;
 
-  /// Updates the graph using [GraphMutator]
+  /// Updates the graph using [GraphMutator]. Initiates relayout.
   void mutate(void Function(GraphMutator<N, E> mutator) callback) {
     callback(GraphMutator<N, E>(this));
     _relayout();
@@ -113,6 +113,16 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
       ..translate(center.dx, center.dy)
       ..scale(factor)
       ..translate(-center.dx, -center.dy);
+  }
+
+  /// {@nodoc}
+  void replaceNode(N node, N newNode) {
+    _replaceNode(node, newNode);
+  }
+
+  /// {@nodoc}
+  void setPinned(N node, bool pinned) {
+    _replaceNode(node, node.copyWithPinned(pinned) as N);
   }
 
   Future<void> _relayout() async {
@@ -209,6 +219,43 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
       throw StateError('Edge $edge is not in the graph');
     }
     _edges.remove(edge);
+  }
+
+  /// Pins or unpins the node. Pinned nodes should not be affected by layout.
+  void _replaceNode(N node, N newNode) {
+    if (!_hasNode(node)) {
+      throw ArgumentError.value(node, 'node', 'Node is not in the graph');
+    }
+
+    _nodes
+      ..remove(node)
+      ..add(newNode);
+
+    if (_layout != null) {
+      final position = _layout!.getPosition(node);
+      final builder = GraphLayoutBuilder.fromLayout(_layout!)
+        ..removeNode(node)
+        ..addNode(newNode)
+        ..setNodePosition(newNode, position);
+      _layout = builder.build();
+    }
+
+    final edgesCopy = Set.of(_edges);
+
+    for (final edge in edgesCopy) {
+      if (edge.source == node) {
+        _edges
+          ..remove(edge)
+          ..add(edge.replaceNode(source: newNode) as E);
+      }
+      if (edge.destination == node) {
+        _edges
+          ..remove(edge)
+          ..add(edge.replaceNode(destination: newNode) as E);
+      }
+    }
+
+    notifyListeners();
   }
 
   bool _hasNode(N node) => _nodes.contains(node);

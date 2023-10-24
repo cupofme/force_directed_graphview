@@ -7,16 +7,17 @@ class GraphLayoutBuilder {
   /// {@nodoc}
   GraphLayoutBuilder({
     required this.nodes,
-    required this.edges,
-  });
+  }) : _positions = {};
+
+  /// {@nodoc}
+  GraphLayoutBuilder.fromLayout(GraphLayout layout)
+      : nodes = layout._nodePositions.keys.toSet(),
+        _positions = Map.of(layout._nodePositions);
 
   /// {@nodoc}
   final Set<NodeBase> nodes;
 
-  /// {@nodoc}
-  final Set<EdgeBase> edges;
-
-  final _positions = <NodeBase, Offset>{};
+  final Map<NodeBase, Offset> _positions;
 
   /// Returns the position of the node.
   Offset getNodePosition(NodeBase node) => _positions[node]!;
@@ -24,6 +25,17 @@ class GraphLayoutBuilder {
   /// Sets the position of the node.
   void setNodePosition(NodeBase node, Offset position) =>
       _positions[node] = position;
+
+  /// Removes the node and its position from the layout.
+  void removeNode(NodeBase node) {
+    nodes.remove(node);
+    _positions.remove(node);
+  }
+
+  /// Adds the node to the layout
+  void addNode(NodeBase node) {
+    nodes.add(node);
+  }
 
   /// Moves the node by the given delta.
   void translateNode(NodeBase node, Offset delta) {
