@@ -13,17 +13,15 @@ topics:
 
 environment:
   sdk: ^3.0.0
-  flutter: ^3.10.0
+  flutter: '>=3.10.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
-  # The following packages are direct dependencies of Flutter, 
-  # so we don't need to specify version
-  meta: any
-  vector_math: any
-  collection: any
+  meta: ^1.9.1
+  vector_math: ^2.1.4
+  collection: ^1.17.2
 
 dev_dependencies:
   flutter_test:
