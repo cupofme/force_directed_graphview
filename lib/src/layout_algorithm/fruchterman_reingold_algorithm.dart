@@ -17,6 +17,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     this.relayoutIterationsMultiplier = 0.1,
     this.showIterations = false,
     this.initialPositionExtractor = defaultInitialPositionExtractor,
+    this.maxDistance,
   });
 
   /// The number of iterations to run the algorithm
@@ -30,6 +31,9 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
   /// The function that extracts the initial position of the node
   final InitialNodePositionExtractor initialPositionExtractor;
+
+  /// The maximum distance between nodes. If null, the distance is not limited
+  final double? maxDistance;
 
   @override
   Stream<GraphLayout> layout({
@@ -165,31 +169,27 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
       if (v.pinned) continue;
 
+      // Prevent nodes from getting too far from each other
+      if (maxDistance != null) {
+        final position = layoutBuilder.getNodePosition(v);
+
+        final minDistance = nodes
+            .where((other) => !identical(v, other))
+            .map((other) => position - layoutBuilder.getNodePosition(other))
+            .map((delta) => delta.distance)
+            .reduce(min);
+
+        if (minDistance > maxDistance!) {
+          continue;
+        }
+      }
+
       layoutBuilder.translateNode(
         v,
         (displacement / displacement.distance) *
             min(displacement.distance, temp),
       );
     }
-
-    // Prevent nodes from overlapping
-    // for (final v in nodes) {
-    //   for (final u in nodes) {
-    //     if (identical(v, u)) continue;
-
-    //     final delta =
-    //         layoutBuilder.getNodePosition(v) -
-    //          layoutBuilder.getNodePosition(u);
-    //     final distance = delta.distance;
-
-    //     if (distance < v.size / 2 + u.size / 2) {
-    //       layoutBuilder.translateNode(
-    //         v,
-    //         (delta / distance) * (distance - v.size / 2 - u.size / 2),
-    //       );
-    //     }
-    //   }
-    // }
 
     // Prevent nodes from escaping the canvas
     for (final v in nodes) {

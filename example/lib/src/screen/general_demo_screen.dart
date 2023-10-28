@@ -69,11 +69,12 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
         children: [
           GraphView<Node<User>, Edge<Node<User>, int>>(
             controller: _controller,
-            canvasSize: const GraphCanvasSize.proportional(20),
+            canvasSize: const GraphCanvasSize.proportional(50),
             edgePainter: const _CustomEdgePainter(),
             layoutAlgorithm: FruchtermanReingoldAlgorithm(
               iterations: 500,
               showIterations: true,
+              maxDistance: 300,
               initialPositionExtractor: (node, canvasSize) {
                 if (node.pinned) {
                   return Offset(
