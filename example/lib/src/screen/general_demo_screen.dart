@@ -38,7 +38,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
         final node = Node(
           data: user,
           size: size.toDouble(),
-          pinned: _random.nextInt(nodeCount ~/ 3) == 0,
         );
 
         mutator.addNode(node);
