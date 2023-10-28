@@ -169,26 +169,33 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
       if (v.pinned) continue;
 
+      final translationDelta = (displacement / displacement.distance) *
+          min(displacement.distance, temp);
+
       // Prevent nodes from getting too far from each other
       if (maxDistance != null) {
-        final position = layoutBuilder.getNodePosition(v);
+        var closestDistance = 0.0;
 
-        final minDistance = nodes
-            .where((other) => !identical(v, other))
-            .map((other) => position - layoutBuilder.getNodePosition(other))
-            .map((delta) => delta.distance)
-            .reduce(min);
+        for (final u in nodes) {
+          if (identical(v, u)) continue;
 
-        if (minDistance > maxDistance!) {
+          final delta = layoutBuilder.getNodePosition(u) -
+              layoutBuilder
+                  .getNodePosition(v)
+                  .translate(translationDelta.dx, translationDelta.dy);
+          final distance = delta.distance;
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+          }
+        }
+
+        if (closestDistance > maxDistance!) {
           continue;
         }
       }
 
-      layoutBuilder.translateNode(
-        v,
-        (displacement / displacement.distance) *
-            min(displacement.distance, temp),
-      );
+      layoutBuilder.translateNode(v, translationDelta);
     }
 
     // Prevent nodes from escaping the canvas

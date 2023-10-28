@@ -40,8 +40,8 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     _relayout();
   }
 
-  /// Returns s set of nodes that are currently visible on the screen.
-  /// Uses 1.2 times the viewport size to determine visibility.
+  /// Returns s set of nodes that are currently visible on the screen
+  /// according to the provided [LazyBuilding].
   Set<N> getVisibleNodes() {
     final viewport = _effectiveViewport;
     final layout = _layout;
