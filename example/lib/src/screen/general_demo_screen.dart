@@ -19,7 +19,7 @@ class GeneralDemoScreen extends StatefulWidget {
 }
 
 class GeneralDemoScreenState extends State<GeneralDemoScreen> {
-  final _controller = GraphController<Node<User>, Edge<Node<User>>>();
+  final _controller = GraphController<Node<User>, Edge<Node<User>, int>>();
 
   Set<Node<User>> get _nodes => _controller.nodes;
 
@@ -50,7 +50,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
               Edge(
                 source: node,
                 destination: other,
-                data: Colors.black.withOpacity(random.decimal()),
+                data: random.integer(255, min: 100),
               ),
             );
           }
@@ -68,7 +68,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
       floatingActionButton: ControlButtons(controller: _controller),
       body: Stack(
         children: [
-          GraphView<Node<User>, Edge<Node<User>>>(
+          GraphView<Node<User>, Edge<Node<User>, int>>(
             controller: _controller,
             canvasSize: const GraphCanvasSize.proportional(20),
             edgePainter: const _CustomEdgePainter(),
@@ -124,7 +124,7 @@ class _NodeView extends StatelessWidget {
     required this.node,
   });
 
-  final GraphController<Node<User>, Edge<Node<User>>> controller;
+  final GraphController<Node<User>, Edge<Node<User>, int>> controller;
   final Node<User> node;
 
   @override
@@ -141,10 +141,16 @@ class _NodeView extends StatelessWidget {
                 size: node.size,
               );
 
+              final newEdge = Edge(
+                source: node,
+                destination: newNode,
+                data: 4,
+              );
+
               controller.mutate((mutator) {
                 mutator
                   ..addNode(newNode)
-                  ..addEdge(Edge.simple(node, newNode));
+                  ..addEdge(newEdge);
               });
             },
           ),
@@ -211,13 +217,14 @@ class _Instructions extends StatelessWidget {
   }
 }
 
-class _CustomEdgePainter implements EdgePainter<Node<User>, Edge<Node<User>>> {
+class _CustomEdgePainter
+    implements EdgePainter<Node<User>, Edge<Node<User>, int>> {
   const _CustomEdgePainter();
 
   @override
   void paint(
     Canvas canvas,
-    Edge edge,
+    Edge<Node<User>, int> edge,
     Offset sourcePosition,
     Offset destinationPosition,
   ) {
@@ -225,7 +232,7 @@ class _CustomEdgePainter implements EdgePainter<Node<User>, Edge<Node<User>>> {
       sourcePosition,
       destinationPosition,
       Paint()
-        ..color = (edge.data as Color?) ?? Colors.black
+        ..color = Colors.black.withAlpha(edge.data)
         ..strokeWidth = 2,
     );
   }

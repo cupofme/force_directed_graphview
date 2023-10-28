@@ -24,27 +24,16 @@ abstract base class EdgeBase<N extends NodeBase> {
 
 /// Model that represents a edge in the graph.
 @immutable
-final class Edge<N extends NodeBase> extends EdgeBase<N> {
+final class Edge<N extends NodeBase, T> extends EdgeBase<N> {
   /// {@nodoc}
   const Edge({
     required super.source,
     required super.destination,
-    this.data,
+    required this.data,
   });
 
-  /// SImple constructor that creates an edge without data
-  const Edge.simple(
-    N source,
-    N destination,
-  ) : this(
-          source: source,
-          destination: destination,
-          data: null,
-        );
-
-  /// Value associated with this edge. Intentionally has type Object?
-  /// to not overcomplicate the api
-  final Object? data;
+  /// Value associated with this edge
+  final T data;
 
   @override
   int get hashCode => source.hashCode ^ destination.hashCode ^ data.hashCode;
@@ -59,11 +48,11 @@ final class Edge<N extends NodeBase> extends EdgeBase<N> {
           data == other.data;
 
   @override
-  Edge<N> replaceNode({
+  Edge<N, T> replaceNode({
     N? source,
     N? destination,
   }) {
-    return Edge<N>(
+    return Edge<N, T>(
       data: data,
       source: source ?? this.source,
       destination: destination ?? this.destination,

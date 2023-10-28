@@ -17,7 +17,7 @@ class LargeDemoScreen extends StatefulWidget {
 }
 
 class LargeDemoScreenState extends State<LargeDemoScreen> {
-  final _controller = GraphController<Node<User>, Edge<Node<User>>>();
+  final _controller = GraphController<Node<User>, Edge<Node<User>, int>>();
 
   final _random = Random(0);
 
@@ -44,7 +44,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
         final other = nodes.elementAt(_random.nextInt(_nodeCount));
 
         if (other != node) {
-          mutator.addEdge(Edge.simple(node, other));
+          mutator.addEdge(Edge(source: node, destination: other, data: 10));
         }
       }
     });
@@ -57,7 +57,7 @@ class LargeDemoScreenState extends State<LargeDemoScreen> {
         title: const Text('Large Graph Demo ($_nodeCount nodes)'),
       ),
       floatingActionButton: ControlButtons(controller: _controller),
-      body: GraphView<Node<User>, Edge<Node<User>>>(
+      body: GraphView<Node<User>, Edge<Node<User>, int>>(
         controller: _controller,
         canvasSize: const GraphCanvasSize.fixed(Size.square(7000)),
         lazyBuilding: const LazyBuilding.viewport(1.2),

@@ -15,7 +15,7 @@ void main() {
 
   const node1 = Node(data: 1, size: 100);
   const node2 = Node(data: 2, size: 200);
-  const edge12 = Edge.simple(node1, node2);
+  const edge12 = Edge(source: node1, destination: node2, data: 10);
 
   test('Add and remove node', () {
     controller.mutate((mutator) => mutator.addNode(node1));
