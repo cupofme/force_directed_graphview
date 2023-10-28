@@ -1,4 +1,3 @@
-import 'package:context_menus/context_menus.dart';
 import 'package:example/src/screen/general_demo_screen.dart';
 import 'package:example/src/screen/large_demo_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +18,6 @@ class DemoApp extends StatelessWidget {
         '/general': (context) => const GeneralDemoScreen(),
         '/large': (context) => const LargeDemoScreen(),
       },
-      builder: (context, child) => ContextMenuOverlay(
-        child: child!,
-      ),
     );
   }
 }
