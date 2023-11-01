@@ -55,6 +55,10 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
         }
       }
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.jumpToNode(_nodes.first);
+    });
   }
 
   @override
@@ -73,7 +77,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
             layoutAlgorithm: FruchtermanReingoldAlgorithm(
               iterations: 500,
               showIterations: true,
-              maxDistance: 300,
               initialPositionExtractor: (node, canvasSize) {
                 if (node.pinned) {
                   return Offset(

@@ -17,7 +17,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     this.relayoutIterationsMultiplier = 0.1,
     this.showIterations = false,
     this.initialPositionExtractor = defaultInitialPositionExtractor,
-    this.maxDistance,
+    this.temperature,
   });
 
   /// The number of iterations to run the algorithm
@@ -32,8 +32,8 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
   /// The function that extracts the initial position of the node
   final InitialNodePositionExtractor initialPositionExtractor;
 
-  /// The maximum distance between nodes. If null, the distance is not limited
-  final double? maxDistance;
+  /// The temperature of the algorithm. If null, it will be calculated by `sqrt(size.width / 2 * size.height / 2) / 30`
+  final double? temperature;
 
   @override
   Stream<GraphLayout> layout({
@@ -70,7 +70,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     required Size size,
     required GraphLayout? existingLayout,
   }) async* {
-    var temp = sqrt(size.width / 2 * size.height / 2) / 20;
+    var temp = temperature ?? sqrt(size.width / 2 * size.height / 2) / 30;
 
     final layoutBuilder = GraphLayoutBuilder(
       nodes: nodes,
@@ -126,7 +126,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
   }) {
     final width = size.width;
     final height = size.height;
-    final k = sqrt(width * height / nodes.length) / 2;
+    final k = sqrt(width * height / nodes.length);
 
     double attraction(double x) => pow(x, 2) / k;
     double repulsion(double x) => pow(k, 2) / (x < 0.01 ? 0.01 : x);
@@ -137,11 +137,12 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
     // Calculate repulsive forces.
     for (final v in nodes) {
+      final positionV = layoutBuilder.getNodePosition(v);
+
       for (final u in nodes) {
         if (identical(v, u)) continue;
 
-        final delta =
-            layoutBuilder.getNodePosition(v) - layoutBuilder.getNodePosition(u);
+        final delta = positionV - layoutBuilder.getNodePosition(u);
         final distance = delta.distance;
 
         displacements[v] =
@@ -172,29 +173,6 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
       final translationDelta = (displacement / displacement.distance) *
           min(displacement.distance, temp);
 
-      // Prevent nodes from getting too far from each other
-      if (maxDistance != null) {
-        var closestDistance = 0.0;
-
-        for (final u in nodes) {
-          if (identical(v, u)) continue;
-
-          final delta = layoutBuilder.getNodePosition(u) -
-              layoutBuilder
-                  .getNodePosition(v)
-                  .translate(translationDelta.dx, translationDelta.dy);
-          final distance = delta.distance;
-
-          if (distance < closestDistance) {
-            closestDistance = distance;
-          }
-        }
-
-        if (closestDistance > maxDistance!) {
-          continue;
-        }
-      }
-
       layoutBuilder.translateNode(v, translationDelta);
     }
 
@@ -205,8 +183,8 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
       layoutBuilder.setNodePosition(
         v,
         Offset(
-          position.dx.clamp(0 + v.size / 2, width - v.size / 2),
-          position.dy.clamp(0 + v.size / 2, height - v.size / 2),
+          position.dx.clamp(v.size / 2, width - v.size / 2),
+          position.dy.clamp(v.size / 2, height - v.size / 2),
         ),
       );
     }

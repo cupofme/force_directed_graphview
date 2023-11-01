@@ -1,7 +1,12 @@
+## unreleased
+
+- **BREAKING**: Remove `maxDistance` parameter from `FruchtermanReingoldAlgorithm`
+- Add `temperature` parameter to `FruchtermanReingoldAlgorithm`
+
 ## 0.3.0
 
 - **BREAKING**: Add type generic to `Edge` class
-- Add `maxDistance` parameter to `FruchtermanReingoldAlgorithmh`
+- Add `maxDistance` parameter to `FruchtermanReingoldAlgorithm`
 
 ## 0.2.0
 
