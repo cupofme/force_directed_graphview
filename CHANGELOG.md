@@ -1,4 +1,4 @@
-## unreleased
+## 0.3.0
 
 - **BREAKING**: Add type generic to `Edge` class
 - Add `maxDistance` parameter to `FruchtermanReingoldAlgorithmh`
