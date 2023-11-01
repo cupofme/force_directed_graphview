@@ -37,6 +37,10 @@ class _EdgesPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (!controller.canLayout) {
+      return;
+    }
+
     final layout = controller.layout;
     final edges = controller.edges;
 

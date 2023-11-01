@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:force_directed_graphview/force_directed_graphview.dart';
 import 'package:force_directed_graphview/src/configuration.dart';
@@ -27,7 +29,6 @@ class GraphView<N extends NodeBase, E extends EdgeBase<N>>
     this.edgePainter = const LineEdgePainter(),
     this.labelBuilder,
     this.canvasBackgroundBuilder,
-    this.loaderBuilder,
     this.builder,
     this.minScale = 0.5,
     this.maxScale = 2,
@@ -46,10 +47,6 @@ class GraphView<N extends NodeBase, E extends EdgeBase<N>>
   /// The builder that builds the background of the graph.
   /// If null, the background will be transparent.
   final WidgetBuilder? canvasBackgroundBuilder;
-
-  /// The builder that builds the loading widget before the first
-  /// layout is applied. If null, displays [SizedBox.shrink()]
-  final WidgetBuilder? loaderBuilder;
 
   /// The controller that controls the graph.
   final GraphController<N, E> controller;
@@ -80,19 +77,11 @@ class GraphView<N extends NodeBase, E extends EdgeBase<N>>
 class _GraphViewState<N extends NodeBase, E extends EdgeBase<N>>
     extends State<GraphView<N, E>> {
   final _transformationController = TransformationController();
-  var _isLayoutApplied = false;
 
   @override
   void initState() {
     super.initState();
     _initController();
-    widget.controller.addListener(_onControllerChanged);
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(_onControllerChanged);
-    super.dispose();
   }
 
   void _initController() {
@@ -104,19 +93,8 @@ class _GraphViewState<N extends NodeBase, E extends EdgeBase<N>>
     );
   }
 
-  void _onControllerChanged() {
-    final hasLayout = widget.controller.canLayout;
-    if (hasLayout != _isLayoutApplied) {
-      setState(() => _isLayoutApplied = hasLayout);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (!_isLayoutApplied) {
-      return widget.loaderBuilder?.call(context) ?? const SizedBox.shrink();
-    }
-
     return InheritedConfiguration(
       controller: widget.controller,
       configuration: GraphViewConfiguration(

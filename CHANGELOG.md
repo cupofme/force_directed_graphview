@@ -1,7 +1,9 @@
 ## unreleased
 
 - **BREAKING**: Remove `maxDistance` parameter from `FruchtermanReingoldAlgorithm`
+- **BREAKING**: Remove `loaderBuilder` parameter from `GraphView`
 - Add `temperature` parameter to `FruchtermanReingoldAlgorithm`
+- Make `jumpToNode` method async to ensure the graph is laid out
 
 ## 0.3.0
 

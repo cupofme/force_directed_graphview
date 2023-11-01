@@ -17,6 +17,10 @@ class NodesView extends StatelessWidget {
     return AnimatedBuilder(
       animation: controller,
       builder: (context, _) {
+        if (!controller.canLayout) {
+          return const SizedBox();
+        }
+
         final visibleNodes = controller.getVisibleNodes();
         final layout = controller.layout;
 

@@ -60,9 +60,17 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   }
 
   /// Instantly jumps to the given node placing it in the center of the screen.
-  void jumpToNode(N node) {
+  FutureOr<void> jumpToNode(N node) async {
     if (!_hasNode(node)) {
       throw ArgumentError.value(node, 'node', 'Node is not in the graph');
+    }
+
+    if (_layout == null) {
+      await Future<void>.delayed(Duration.zero);
+
+      if (_layout == null) {
+        throw StateError('Graph is not laid out yet');
+      }
     }
 
     final controller = _transformationController;
