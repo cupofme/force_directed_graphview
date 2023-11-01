@@ -1,4 +1,4 @@
-## unreleased
+## 0.4.0
 
 - **BREAKING**: Remove `maxDistance` parameter from `FruchtermanReingoldAlgorithm`
 - **BREAKING**: Remove `loaderBuilder` parameter from `GraphView`
