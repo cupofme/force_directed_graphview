@@ -101,8 +101,12 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
         size: size,
         temp: temp,
       );
+      // Lundy & Mees annealing coefficient model
+      //temp = temp /(1 +  0.0001*temp);
 
-      temp *= 1 - (step / iterations);
+      // Annealing schedule inspired by VCF by Peprah, Appiah, Amponash 2017
+      final vc = nodes.length * 2;
+      temp *= 1 / (1 + 1 / (sqrt(step * (vc + 1) + vc)));
 
       if (showIterations) {
         yield layoutBuilder.build();
@@ -127,26 +131,32 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     final width = size.width;
     final height = size.height;
     final k = sqrt(width * height / nodes.length);
+    final repulsionDistanceCutoff = k * 3; // Seems to work the best
+    final kSquared = k * k;
 
-    double attraction(double x) => pow(x, 2) / k;
-    double repulsion(double x) => pow(k, 2) / (x < 0.01 ? 0.01 : x);
+    double attraction(double x) => x * x / k;
+    double clampDistance(double x) => (x < 0.01 ? 0.01 : x);
 
     final displacements = {
       for (final node in nodes) node: Offset.zero,
     };
 
     // Calculate repulsive forces.
-    for (final v in nodes) {
-      final positionV = layoutBuilder.getNodePosition(v);
+    final nodesList = nodes.toList();
+    for (var i = 0; i < nodesList.length; i++) {
+      for (var j = i + 1; j < nodesList.length; j++) {
+        if (i == j) continue;
+        final u = nodesList[i];
+        final v = nodesList[j];
 
-      for (final u in nodes) {
-        if (identical(v, u)) continue;
-
+        final positionV = layoutBuilder.getNodePosition(v);
         final delta = positionV - layoutBuilder.getNodePosition(u);
-        final distance = delta.distance;
+        final distance = clampDistance(delta.distance);
+        if (distance > repulsionDistanceCutoff) continue;
 
-        displacements[v] =
-            displacements[v]! + (delta / distance) * repulsion(distance);
+        final disp = (delta * kSquared) / (distance * distance);
+        displacements[v] = displacements[v]! + disp;
+        displacements[u] = displacements[u]! - disp;
       }
     }
 
@@ -158,10 +168,9 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
       final delta = sourcePos - destPos;
       final distance = delta.distance;
 
-      displacements[edge.source] = displacements[edge.source]! -
-          (delta / distance) * attraction(distance);
-      displacements[edge.destination] = displacements[edge.destination]! +
-          (delta / distance) * attraction(distance);
+      final disp = (delta / distance) * attraction(distance);
+      displacements[edge.source] = displacements[edge.source]! - disp;
+      displacements[edge.destination] = displacements[edge.destination]! + disp;
     }
 
     // Calculate displacement
@@ -169,6 +178,9 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
       final displacement = displacements[v]!;
 
       if (v.pinned) continue;
+
+      // Not worth moving
+      if (displacement.distance < repulsionDistanceCutoff / 30) continue;
 
       final translationDelta = (displacement / displacement.distance) *
           min(displacement.distance, temp);

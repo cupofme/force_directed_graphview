@@ -1,6 +1,6 @@
 name: force_directed_graphview
 description: A highly customizable library for displaying force-directed graphs in Flutter.
-version: 0.4.0
+version: 0.4.1
 
 homepage: https://github.com/cupofme/force_directed_graphview
 repository: https://github.com/cupofme/force_directed_graphview
