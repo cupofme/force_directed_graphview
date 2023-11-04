@@ -1,3 +1,7 @@
+## 0.4.1
+
+- VCF annealing for Fruchterman-Reingold algorithm (by @ichorid)
+
 ## 0.4.0
 
 - **BREAKING**: Remove `maxDistance` parameter from `FruchtermanReingoldAlgorithm`
