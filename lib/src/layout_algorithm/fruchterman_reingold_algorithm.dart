@@ -18,6 +18,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     this.showIterations = false,
     this.initialPositionExtractor = defaultInitialPositionExtractor,
     this.temperature,
+    this.optimalDistance,
   });
 
   /// The number of iterations to run the algorithm
@@ -34,6 +35,9 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
 
   /// The temperature of the algorithm. If null, it will be calculated by `sqrt(size.width / 2 * size.height / 2) / 30`
   final double? temperature;
+
+  /// Optimal distance between nodes (k)
+  final double? optimalDistance;
 
   @override
   Stream<GraphLayout> layout({
@@ -71,6 +75,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     required GraphLayout? existingLayout,
   }) async* {
     var temp = temperature ?? sqrt(size.width / 2 * size.height / 2) / 30;
+    final k = optimalDistance ?? sqrt(size.width * size.height / nodes.length);
 
     final layoutBuilder = GraphLayoutBuilder(
       nodes: nodes,
@@ -100,6 +105,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
         edges: edges,
         size: size,
         temp: temp,
+        k: k,
       );
       // Lundy & Mees annealing coefficient model
       //temp = temp /(1 +  0.0001*temp);
@@ -127,10 +133,10 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     required Set<EdgeBase> edges,
     required Size size,
     required double temp,
+    required double k, // Optimal distance between nodes (k)
   }) {
     final width = size.width;
     final height = size.height;
-    final k = sqrt(width * height / nodes.length);
     final repulsionDistanceCutoff = k * 3; // Seems to work the best
     final kSquared = k * k;
 
