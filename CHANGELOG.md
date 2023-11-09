@@ -1,6 +1,6 @@
 ## 0.4.2
 
-- App ability to provide optimal node distance (k) for Fruchterman-Reingold algorithm (by @ichorid)
+- Add ability to provide optimal node distance (k) for Fruchterman-Reingold algorithm (by @ichorid)
 
 ## 0.4.1
 
