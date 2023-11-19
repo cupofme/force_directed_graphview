@@ -8,12 +8,15 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
 
   GraphLayout? _layout;
   Size? _currentSize;
+
   // Region of canvas that is building its nodes now
   Rect? _effectiveViewport;
   Rect? _actualViewport;
   GraphLayoutAlgorithm? _currentAlgorithm;
   LazyBuilding? _lazyBuilding;
   TransformationController? _transformationController;
+
+  var _centered = false;
 
   /// {@nodoc}
   Set<N> get nodes => Set.unmodifiable(_nodes);
@@ -59,20 +62,13 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     ).toSet();
   }
 
-  /// Instantly jumps to the given node placing it in the center of the screen.
-  FutureOr<void> jumpToNode(N node) async {
-    if (!_hasNode(node)) {
-      throw ArgumentError.value(node, 'node', 'Node is not in the graph');
-    }
+  /// {@nodoc}
+  void jumpToCenter() {
+    jumpToPosition(canvasSize.center(Offset.zero));
+  }
 
-    if (_layout == null) {
-      await Future<void>.delayed(Duration.zero);
-
-      if (_layout == null) {
-        throw StateError('Graph is not laid out yet');
-      }
-    }
-
+  /// Instantly jumps to the given position on canvas
+  void jumpToPosition(Offset position) {
     final controller = _transformationController;
     final layout = _layout;
     final viewport = _actualViewport;
@@ -80,7 +76,6 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
       return;
     }
 
-    final position = layout.getPosition(node);
     final oldMatrix = controller.value.clone();
     final matrixScale = oldMatrix.getMaxScaleOnAxis();
     final matrixOffset =
@@ -94,6 +89,22 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
         (center.dx - matrixOffset.dx),
         (center.dy - matrixOffset.dy),
       );
+  }
+
+  /// Instantly jumps to the given node placing it in the center of the screen.
+  FutureOr<void> jumpToNode(N node) async {
+    if (!_hasNode(node)) {
+      throw ArgumentError.value(node, 'node', 'Node is not in the graph');
+    }
+
+    if (_layout == null) {
+      await Future<void>.delayed(Duration.zero);
+
+      if (_layout == null) {
+        throw StateError('Graph is not laid out yet');
+      }
+    }
+    jumpToPosition(_layout!.getPosition(node));
   }
 
   /// Instantly zoom in by a given factor.
@@ -177,6 +188,11 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
 
     await for (final layout in layoutStream) {
       _layout = layout;
+
+      if (!_centered) {
+        jumpToCenter();
+        _centered = true;
+      }
       notifyListeners();
     }
   }
