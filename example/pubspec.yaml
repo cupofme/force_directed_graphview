@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
   faker: ^2.1.0
-  cached_network_image: ^3.2.3
+  cached_network_image: ^3.3.0
   force_directed_graphview: 
     path: ../
 
