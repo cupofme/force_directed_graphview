@@ -1,3 +1,7 @@
+## 0.5.0
+
+- Center viewport by default (by @ichorid)
+
 ## 0.4.2
 
 - Add ability to provide optimal node distance (k) for Fruchterman-Reingold algorithm (by @ichorid)
