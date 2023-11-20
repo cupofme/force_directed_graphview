@@ -55,7 +55,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
         }
       }
     });
-
   }
 
   @override
