@@ -56,9 +56,6 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.jumpToNode(_nodes.first);
-    });
   }
 
   @override
