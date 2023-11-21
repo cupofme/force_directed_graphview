@@ -1,3 +1,4 @@
+import 'package:example/src/screen/animated_edges_demo_screen.dart';
 import 'package:example/src/screen/general_demo_screen.dart';
 import 'package:example/src/screen/large_demo_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class DemoApp extends StatelessWidget {
         '/': (context) => const DemosList(),
         '/general': (context) => const GeneralDemoScreen(),
         '/large': (context) => const LargeDemoScreen(),
+        '/animated_edges': (context) => const AnimatedEdgesDemoScreen(),
       },
     );
   }
@@ -43,6 +45,11 @@ class DemosList extends StatelessWidget {
               leading: const Icon(Icons.location_searching_outlined),
               title: const Text('Large'),
               onTap: () => Navigator.of(context).pushNamed('/large'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.animation),
+              title: const Text('Animated Edges'),
+              onTap: () => Navigator.of(context).pushNamed('/animated_edges'),
             ),
           ],
         ),

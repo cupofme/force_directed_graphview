@@ -1,9 +1,8 @@
-import 'dart:ui';
-
+import 'package:flutter/widgets.dart';
 import 'package:force_directed_graphview/src/model/edge.dart';
 import 'package:force_directed_graphview/src/model/node.dart';
 
-/// An interface for painting edges.
+/// Interface for painting edges.
 abstract interface class EdgePainter<N extends NodeBase,
     E extends EdgeBase<N>> {
   /// Paints the edge between [sourcePosition] and [destinationPosition].
@@ -13,4 +12,11 @@ abstract interface class EdgePainter<N extends NodeBase,
     Offset sourcePosition,
     Offset destinationPosition,
   );
+}
+
+/// Interface for painting animated edges.
+abstract interface class AnimatedEdgePainter<N extends NodeBase,
+    E extends EdgeBase<N>> implements EdgePainter<N, E> {
+  /// Animation used to paint the edge.
+  Animation<double> get animation;
 }
