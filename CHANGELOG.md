@@ -1,3 +1,8 @@
+## 0.6.0
+
+- Add `AnimatedEdgePainter` interface
+- Add `AnimatedDashEdgePainter` to draw animated dashed edges
+
 ## 0.5.0
 
 - Center viewport by default (by @ichorid)
