@@ -71,7 +71,7 @@ class GeneralDemoScreenState extends State<GeneralDemoScreen> {
             canvasSize: const GraphCanvasSize.proportional(50),
             edgePainter: const _CustomEdgePainter(),
             layoutAlgorithm: FruchtermanReingoldAlgorithm(
-              iterations: 1500,
+              iterations: 500,
               showIterations: true,
               initialPositionExtractor: (node, canvasSize) {
                 if (node.pinned) {

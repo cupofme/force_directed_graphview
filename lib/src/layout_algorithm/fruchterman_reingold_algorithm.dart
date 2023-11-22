@@ -108,7 +108,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
         k: k,
       );
       // Lundy & Mees annealing coefficient model
-      //temp = temp /(1 +  0.0001*temp);
+      // temp = temp / (1 + 0.0001 * temp);
 
       // Annealing schedule inspired by VCF by Peprah, Appiah, Amponash 2017
       final vc = nodes.length * 2;

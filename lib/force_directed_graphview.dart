@@ -1,3 +1,4 @@
+export 'src/edge_painter/animated_dash_edge_painter.dart';
 export 'src/edge_painter/edge_painter.dart';
 export 'src/edge_painter/line_edge_painter.dart';
 export 'src/graph_view.dart';

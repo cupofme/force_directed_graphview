@@ -20,6 +20,10 @@ class EdgesView extends StatelessWidget {
         painter: _EdgesPainter(
           controller: controller,
           configuration: configuration,
+          animation: switch (configuration.edgePainter) {
+            AnimatedEdgePainter(:final animation) => animation,
+            _ => null,
+          },
         ),
       ),
     );
@@ -30,10 +34,12 @@ class _EdgesPainter extends CustomPainter {
   _EdgesPainter({
     required this.controller,
     required this.configuration,
-  }) : super(repaint: controller);
+    required this.animation,
+  }) : super(repaint: Listenable.merge([controller, animation]));
 
   final GraphController controller;
   final GraphViewConfiguration configuration;
+  final Animation<double>? animation;
 
   @override
   void paint(Canvas canvas, Size size) {
