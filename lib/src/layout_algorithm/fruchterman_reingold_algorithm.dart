@@ -84,8 +84,7 @@ class FruchtermanReingoldAlgorithm implements GraphLayoutAlgorithm {
     for (final node in nodes) {
       layoutBuilder.setNodePosition(
         node,
-        existingLayout?.getPositionOrNull(node) ??
-            initialPositionExtractor(node, size),
+        initialPositionExtractor(node, size) ?? existingLayout?.getPositionOrNull(node),
       );
     }
 
