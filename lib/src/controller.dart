@@ -289,10 +289,10 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
       print("danh-1");
     _edges.clear();
       print("danh-2");
-    _layout = const GraphLayout.empty();
-      print("danh-3");
-    notifyListeners();
-      print("danh-4");
+    // _layout = const GraphLayout.empty();
+    //   print("danh-3");
+    // notifyListeners();
+    //   print("danh-4");
   }
 
   bool _hasNode(N node) => _nodes.contains(node);
