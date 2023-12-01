@@ -65,7 +65,7 @@ class GraphLayout {
   final Map<NodeBase, Offset> _nodePositions;
 
   /// Returns a node position in layout
-  Offset getPosition(NodeBase node) => getPositionOrNull(node) ?? Offset(0.0, 0.0);
+  Offset getPosition(NodeBase node) => getPositionOrNull(node) ?? Offset(1.0, 1.0);
 
   /// Returns a node position in layout if the position exists,
   /// returns null otherwise
