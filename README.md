@@ -1,5 +1,7 @@
 # force_directed_graphview
 
+![Pub Version](https://img.shields.io/pub/v/force_directed_graphview)
+![Pub Likes](https://img.shields.io/pub/likes/force_directed_graphview)
 [![CI](https://github.com/cupofme/force_directed_graphview/actions/workflows/ci.yaml/badge.svg)](https://github.com/cupofme/force_directed_graphview/actions/workflows/ci.yaml)
 [![Deploy to Github Pages](https://github.com/cupofme/force_directed_graphview/actions/workflows/deploy.yaml/badge.svg?branch=main)](https://github.com/cupofme/force_directed_graphview/actions/workflows/deploy.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
