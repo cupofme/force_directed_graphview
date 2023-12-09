@@ -1,3 +1,7 @@
+## 0.6.1
+
+- Add pub.dev shields to readme
+
 ## 0.6.0
 
 - Add `AnimatedEdgePainter` interface
