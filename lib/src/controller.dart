@@ -287,7 +287,7 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   void clear() {
     _nodes.clear();
     _edges.clear();
-    _layout = const GraphLayout.empty();
+    // _layout = const GraphLayout.empty();
     notifyListeners();
   }
 
