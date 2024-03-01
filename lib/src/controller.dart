@@ -7,7 +7,6 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   final _edges = <E>{};
 
   GraphLayout? _layout;
-  Size? _currentSize;
 
   // Region of canvas that is building its nodes now
   Rect? _effectiveViewport;
@@ -15,7 +14,9 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   GraphLayoutAlgorithm? _currentAlgorithm;
   LazyBuilding? _lazyBuilding;
   TransformationController? _transformationController;
+  GraphCanvasSize? _canvasSize;
 
+  Size? get _currentSize => _canvasSize?.resolve(nodes: nodes, edges: edges);
   var _centered = false;
 
   /// {@nodoc}
@@ -175,10 +176,7 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     _lazyBuilding = lazyBuilding;
     _transformationController = transformationController;
     _currentAlgorithm = algorithm;
-    _currentSize = size.resolve(
-      nodes: _nodes,
-      edges: _edges,
-    );
+    _canvasSize = size;
 
     final layoutStream = algorithm.layout(
       nodes: _nodes,
