@@ -1,3 +1,7 @@
+## 0.6.2
+
+- Fix `GraphCanvasSizeProportional` error when new graph is mutated (by @PatrickStar125)
+
 ## 0.6.1
 
 - Add pub.dev shields to readme
