@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 /// Base class for all edges
 abstract base class EdgeBase<N extends NodeBase> {
-  /// {@nodoc}
+  /// { @nodoc }
   const EdgeBase({
     required this.source,
     required this.destination,
@@ -25,7 +25,7 @@ abstract base class EdgeBase<N extends NodeBase> {
 /// Model that represents a edge in the graph.
 @immutable
 final class Edge<N extends NodeBase, T> extends EdgeBase<N> {
-  /// {@nodoc}
+  /// { @nodoc }
   const Edge({
     required super.source,
     required super.destination,

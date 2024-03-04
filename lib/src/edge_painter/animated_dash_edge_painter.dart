@@ -5,7 +5,7 @@ import 'package:force_directed_graphview/force_directed_graphview.dart';
 @immutable
 final class AnimatedDashEdgePainter<N extends NodeBase, E extends EdgeBase<N>>
     implements AnimatedEdgePainter<N, E> {
-  /// {@nodoc}
+  /// { @nodoc }
   const AnimatedDashEdgePainter({
     required this.animation,
     this.thickness = 1.0,
@@ -14,16 +14,16 @@ final class AnimatedDashEdgePainter<N extends NodeBase, E extends EdgeBase<N>>
     this.dashSpacing = 10.0,
   });
 
-  /// {@nodoc}
+  /// { @nodoc }
   final double thickness;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final double dashLength;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final double dashSpacing;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final Color color;
 
   @override

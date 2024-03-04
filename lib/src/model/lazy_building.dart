@@ -15,7 +15,7 @@ sealed class LazyBuilding {
 /// {@endtemplate}
 @immutable
 final class LazyBuildingNone implements LazyBuilding {
-  /// {@nodoc}
+  /// { @nodoc }
   const LazyBuildingNone();
 }
 
@@ -25,7 +25,7 @@ final class LazyBuildingNone implements LazyBuilding {
 /// {@endtemplate}
 @immutable
 final class LazyBuildingViewport implements LazyBuilding {
-  /// {@nodoc}
+  /// { @nodoc }
   const LazyBuildingViewport([
     this.scale = 1.5,
   ]) : assert(scale > 0, 'Viewport scale must be greater than 0');

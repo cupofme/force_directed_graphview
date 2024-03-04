@@ -5,7 +5,7 @@ import 'package:force_directed_graphview/src/configuration.dart';
 /// An InheritedWidget that provides [GraphViewConfiguration]
 /// and [GraphController] down to the widget tree
 class InheritedConfiguration extends InheritedWidget {
-  /// {@nodoc}
+  /// { @nodoc }
   const InheritedConfiguration({
     required this.configuration,
     required this.controller,
@@ -13,20 +13,20 @@ class InheritedConfiguration extends InheritedWidget {
     super.key,
   });
 
-  /// {@nodoc}
+  /// { @nodoc }
   final GraphViewConfiguration configuration;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final GraphController controller;
 
-  /// {@nodoc}
+  /// { @nodoc }
   static GraphController controllerOf(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<InheritedConfiguration>()!
         .controller;
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   static GraphViewConfiguration configurationOf(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<InheritedConfiguration>()!

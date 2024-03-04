@@ -19,10 +19,10 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   Size? _currentSize;
   var _centered = false;
 
-  /// {@nodoc}
+  /// { @nodoc }
   Set<N> get nodes => Set.unmodifiable(_nodes);
 
-  /// {@nodoc}
+  /// { @nodoc }
   Set<E> get edges => Set.unmodifiable(_edges);
 
   /// Returns the current layout. Throws [StateError]
@@ -64,7 +64,7 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     ).toSet();
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   void jumpToCenter() {
     jumpToPosition(canvasSize.center(Offset.zero));
   }
@@ -136,12 +136,12 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
       ..translate(-center.dx, -center.dy);
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   void replaceNode(N node, N newNode) {
     _replaceNode(node, newNode);
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   void setPinned(N node, bool pinned) {
     _replaceNode(node, node.copyWithPinned(pinned) as N);
   }
@@ -282,7 +282,7 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     notifyListeners();
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   void clear() {
     _nodes.clear();
     _edges.clear();
@@ -298,33 +298,33 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
 /// Wrapper around [GraphController] that allows
 /// changing the graph in a batch to avoid unnecessary rebuilds.
 class GraphMutator<N extends NodeBase, E extends EdgeBase<N>> {
-  /// {@nodoc}
+  /// { @nodoc }
   GraphMutator(this.controller);
 
-  /// {@nodoc}
+  /// { @nodoc }
   final GraphController controller;
 
-  /// {@nodoc}
+  /// { @nodoc }
   void addNode(N node) {
     controller._addNode(node);
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   void addEdge(E edge) {
     controller._addEdge(edge);
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   void removeNode(N node) {
     controller._removeNode(node);
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   void removeEdge(E edge) {
     controller._removeEdge(edge);
   }
 
-  /// {@nodoc}
+  /// { @nodoc }
   void clear() {
     controller.clear();
   }

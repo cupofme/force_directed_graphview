@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 /// Base class for all nodes
 abstract base class NodeBase {
-  /// {@nodoc}
+  /// { @nodoc }
   const NodeBase({
     required this.size,
     this.pinned = false,
@@ -23,7 +23,7 @@ abstract base class NodeBase {
 /// Default implementation of [NodeBase]
 @immutable
 final class Node<T> extends NodeBase {
-  /// {@nodoc}
+  /// { @nodoc }
   const Node({
     required this.data,
     required super.size,
@@ -44,7 +44,7 @@ final class Node<T> extends NodeBase {
   @override
   NodeBase copyWithPinned(bool pinned) => copyWith(pinned: pinned);
 
-  /// {@nodoc}
+  /// { @nodoc }
   Node<T> copyWith({
     double? size,
     bool? pinned,

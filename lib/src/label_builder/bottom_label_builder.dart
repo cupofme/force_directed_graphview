@@ -4,7 +4,7 @@ import 'package:force_directed_graphview/src/model/node.dart';
 
 /// Label builder that places the label below the node.
 final class BottomLabelBuilder<N extends NodeBase> implements LabelBuilder<N> {
-  /// {@nodoc}
+  /// { @nodoc }
   BottomLabelBuilder({
     required this.builder,
     required this.labelSize,

@@ -5,6 +5,6 @@ import 'package:force_directed_graphview/src/model/node.dart';
 /// limitations when working with functions.
 /// Currently should not be used directly.
 abstract interface class NodeBuilder<N extends NodeBase> {
-  /// {@nodoc}
+  /// { @nodoc }
   Widget build(BuildContext context, N node);
 }

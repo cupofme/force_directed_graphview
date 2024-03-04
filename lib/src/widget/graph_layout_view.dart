@@ -4,9 +4,9 @@ import 'package:force_directed_graphview/src/widget/inherited_configuration.dart
 import 'package:force_directed_graphview/src/widget/labels_view.dart';
 import 'package:force_directed_graphview/src/widget/nodes_view.dart';
 
-/// {@nodoc}
+/// { @nodoc }
 class GraphLayoutView extends StatelessWidget {
-  /// {@nodoc}
+  /// { @nodoc }
   const GraphLayoutView({
     super.key,
   });

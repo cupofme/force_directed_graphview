@@ -5,7 +5,7 @@ import 'package:force_directed_graphview/force_directed_graphview.dart';
 @immutable
 final class LineEdgePainter<N extends NodeBase, E extends EdgeBase<N>>
     implements EdgePainter<N, E> {
-  /// {@nodoc}
+  /// { @nodoc }
   const LineEdgePainter({
     this.thickness = 1.0,
     this.color = Colors.black,

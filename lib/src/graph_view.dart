@@ -19,7 +19,7 @@ typedef ChildBuilder = Widget Function(
 /// A widget that displays a graph.
 class GraphView<N extends NodeBase, E extends EdgeBase<N>>
     extends StatefulWidget {
-  /// {@nodoc}
+  /// { @nodoc }
   const GraphView({
     required this.nodeBuilder,
     required this.controller,

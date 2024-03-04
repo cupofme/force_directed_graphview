@@ -29,7 +29,7 @@ sealed class GraphCanvasSize {
 /// {@endtemplate}
 @immutable
 final class GraphCanvasSizeFixed implements GraphCanvasSize {
-  /// {@nodoc}
+  /// { @nodoc }
   const GraphCanvasSizeFixed(this.size);
 
   /// The fixed size of the graph canvas.

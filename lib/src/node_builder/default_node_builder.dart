@@ -9,12 +9,12 @@ typedef NodeViewBuilder<N extends NodeBase> = Widget Function(
 
 /// Dumb implementation of [NodeBuilder].
 final class DefaultNodeBuilder<N extends NodeBase> implements NodeBuilder<N> {
-  /// {@nodoc}
+  /// { @nodoc }
   DefaultNodeBuilder({
     required this.builder,
   });
 
-  /// {@nodoc}
+  /// { @nodoc }
   final NodeViewBuilder<N> builder;
 
   @override

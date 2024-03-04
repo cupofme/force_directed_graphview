@@ -4,17 +4,17 @@ import 'package:force_directed_graphview/force_directed_graphview.dart';
 /// Builder for the graph layout. Used to manipulate a mutable graph structure
 /// and the build an immutable [GraphLayout] instance.
 class GraphLayoutBuilder {
-  /// {@nodoc}
+  /// { @nodoc }
   GraphLayoutBuilder({
     required this.nodes,
   }) : _positions = {};
 
-  /// {@nodoc}
+  /// { @nodoc }
   GraphLayoutBuilder.fromLayout(GraphLayout layout)
       : nodes = layout._nodePositions.keys.toSet(),
         _positions = Map.of(layout._nodePositions);
 
-  /// {@nodoc}
+  /// { @nodoc }
   final Set<NodeBase> nodes;
 
   final Map<NodeBase, Offset> _positions;
@@ -59,7 +59,7 @@ class GraphLayoutBuilder {
 class GraphLayout {
   const GraphLayout._(this._nodePositions);
 
-  /// {@nodoc}
+  /// { @nodoc }
   const GraphLayout.empty() : _nodePositions = const {};
 
   final Map<NodeBase, Offset> _nodePositions;

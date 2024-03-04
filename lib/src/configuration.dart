@@ -6,7 +6,7 @@ import 'package:force_directed_graphview/force_directed_graphview.dart';
 /// to the internal widgets.
 @immutable
 class GraphViewConfiguration {
-  /// {@nodoc}
+  /// { @nodoc }
   const GraphViewConfiguration({
     required this.nodeBuilder,
     required this.edgePainter,
@@ -16,21 +16,21 @@ class GraphViewConfiguration {
     required this.builder,
   });
 
-  /// {@nodoc}
+  /// { @nodoc }
   final NodeBuilder nodeBuilder;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final EdgePainter edgePainter;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final LabelBuilder? labelBuilder;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final WidgetBuilder? canvasBackgroundBuilder;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final ChildBuilder? builder;
 
-  /// {@nodoc}
+  /// { @nodoc }
   final GraphLayoutAlgorithm layoutAlgorithm;
 }
