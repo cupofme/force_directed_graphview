@@ -14,9 +14,9 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   GraphLayoutAlgorithm? _currentAlgorithm;
   LazyBuilding? _lazyBuilding;
   TransformationController? _transformationController;
-  GraphCanvasSize? _canvasSize;
+  GraphCanvasSize? _size;
 
-  Size? get _currentSize => _canvasSize?.resolve(nodes: nodes, edges: edges);
+  Size? _currentSize;
   var _centered = false;
 
   /// {@nodoc}
@@ -41,6 +41,7 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
   /// Updates the graph using [GraphMutator]. Initiates relayout.
   void mutate(void Function(GraphMutator<N, E> mutator) callback) {
     callback(GraphMutator<N, E>(this));
+    _currentSize = _size?.resolve(nodes: nodes, edges: edges);
     _relayout();
   }
 
@@ -176,8 +177,8 @@ class GraphController<N extends NodeBase, E extends EdgeBase<N>>
     _lazyBuilding = lazyBuilding;
     _transformationController = transformationController;
     _currentAlgorithm = algorithm;
-    _canvasSize = size;
-
+    _size = size;
+    _currentSize = _size?.resolve(nodes: nodes, edges: edges);
     final layoutStream = algorithm.layout(
       nodes: _nodes,
       edges: _edges,
